@@ -3,7 +3,7 @@ YantaoZhao's emacs configuration
 
 
 ## Checklist
-- Tested with Emacs 24.5 on Windows
+- Tested with Emacs 24.5、25.1 on Linux/Windows
 
 
 ## Features
@@ -12,6 +12,7 @@ YantaoZhao's emacs configuration
 
 ## Installation
 Placed as:
-- `~/.emacs`
-- or `~/.emacs.d/init.el`
+- Linux: `~/.emacs`
+- Windows: same directory as `{HOME}/.emacs.d/`, i.e. `{HOME}/.emacs.d/` and `{HOME}/.emacs`
+- Mac:
 
