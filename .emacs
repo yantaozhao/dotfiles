@@ -1,6 +1,6 @@
-;; emacs24.5
+;; emacs 24.5/25.1
 ;; save as file: ~/.emacs
-;; update:2016-7-20, by:YantaoZhao
+;; update:2016-9-30, by:YantaoZhao
 
 
 ;;-----packages-----
@@ -8,11 +8,13 @@
 
 (require 'package)
 ;; package repositories, see: https://www.emacswiki.org/emacs/ELPA/
-;(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("popkit" . "http://elpa.popkit.org/packages/"))
-;; more repositories see: http://elpa.emacs-china.org/
+;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("popkit" . "https://elpa.popkit.org/packages/"))
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/")))
+;; For more repositories see: http://elpa.emacs-china.org/
 ;; and: https://mirrors.tuna.tsinghua.edu.cn/help/elpa/
 (package-initialize)
 
@@ -47,19 +49,19 @@
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
-;; package:ggtags
-(require 'ggtags)
-(add-hook 'c-mode-common-hook
-        (lambda ()
-          (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
-            (ggtags-mode 1))))
+;; package:ggtags [no]
+;(require 'ggtags)
+;(add-hook 'c-mode-common-hook
+;        (lambda ()
+;          (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+;            (ggtags-mode 1))))
 
-;; package:helm-gtags
-(require 'helm-gtags)
-(add-hook 'c-mode-hook 'helm-gtags-mode)
-(add-hook 'c++-mode-hook 'helm-gtags-mode)
-(add-hook 'java-mode-hook 'helm-gtags-mode)
-(add-hook 'asm-mode-hook 'helm-gtags-mode)
+;; package:helm-gtags [no]
+;(require 'helm-gtags)
+;(add-hook 'c-mode-hook 'helm-gtags-mode)
+;(add-hook 'c++-mode-hook 'helm-gtags-mode)
+;(add-hook 'java-mode-hook 'helm-gtags-mode)
+;(add-hook 'asm-mode-hook 'helm-gtags-mode)
 ;(custom-set-variables
 ; '(helm-gtags-path-style 'relative)
 ; '(helm-gtags-ignore-case t)
@@ -83,6 +85,17 @@
 ;(setq indent-guide-recursive t)
 ;(setq indent-guide-char "┆")
 
+;; package:chinese-fonts-setup
+;; Set font, especially for org-mode, recommendation:
+;; Windows:英文=Dejavu Sans Mono或Consolas, 中文=微软雅黑
+;; Linux:英文=Dejavu Sans Mono, 中文=文泉驿微米黑(apt-get install ttf-wqy-microhei)
+;; Mac:...
+(require 'chinese-fonts-setup)
+;; 让 chinese-fonts-setup 随着 emacs 自动生效
+(chinese-fonts-setup-enable)
+;; 让 spacemacs mode-line 中的 Unicode 图标正确显示
+;(cfs-set-spacemacs-fallback-fonts)
+
 
 ;;-----local adjustment-----
 
@@ -95,23 +108,6 @@
               c-basic-offset 4
               tab-width 4
               indent-tabs-mode t)
-
-;; check OS type
-(cond
- ((string-equal system-type "windows-nt")  ;; Microsoft Windows
-  (progn
-    (set-default-font "Consolas")
-    (set-fontset-font "fontset-default" 'chinese-gbk "微软雅黑")
-    (setq face-font-rescale-alist '(("宋体" . 1.2)
-                ("微软雅黑" . 1.1)
-                ))))
-;; ((string-equal system-type "gnu/linux") ;; linux
-;;  (progn
-;;    (message "Linux")))
-;; ((string-equal system-type "darwin")    ;; Mac OS X
-;;  (progn
-;;    (message "Mac OS X")))
- )
 
 ;; display filepath in the title
 (setq frame-title-format
