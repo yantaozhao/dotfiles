@@ -30,6 +30,7 @@
 (require 'company)
 (setq company-idle-delay t)
 (setq company-minimum-prefix-length 2)
+(setq company-dabbrev-downcase nil)
 (add-hook 'after-init-hook 'global-company-mode)
 ;(global-company-mode 1)
 
