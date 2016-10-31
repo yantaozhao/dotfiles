@@ -2,6 +2,7 @@
 
 #Author:zyt
 #OS:ubuntu
+#Require:git & curl
 #
 #~/.vimrc                   :'cp /etc/vim/vimrc ~/.vimrc'
 #~/.vim/                    :plugins directory
@@ -23,6 +24,7 @@ fi
 vundleDir=.vim/bundle/Vundle.vim
 myCfgFile=.vim/vimrc_user
 vundleGitUrl=https://github.com/VundleVim/Vundle.vim.git
+myCfgFileUrl=https://raw.githubusercontent.com/yantaozhao/dotfiles/master/vim/vimrc_user
 
 # check file and directory
 if [ ! -f ${HOME}/.vimrc ]; then
@@ -34,6 +36,8 @@ if [ -d ${HOME}/.vim ]; then
   echo 'directory ~/.vim/ already exist,but I will use it,'
   echo 'backup is recommended before continue if you run this script the 1st time,'
   read -p 'press any key to continue if you have done...'
+else
+  mkdir ~/.vim
 fi
 
 # download Vundle and your configuration file
@@ -43,8 +47,8 @@ if [ ! -d ${HOME}/${vundleDir} ]; then
 fi
 
 if [ ! -f ${HOME}/${myCfgFile} ]; then
-  #TODO:curl to download it
-  echo "your configuration file not found"
+  read -p "Press any key to start download your_configuration_file to ${HOME}/${myCfgFile}..."
+  curl -o ${HOME}/${myCfgFile} ${myCfgFileUrl}
 fi
 
 # source your configuration
