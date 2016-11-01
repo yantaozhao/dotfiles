@@ -10,7 +10,7 @@
 
 
 ## Installation
-### Linux, \*nix, etc.
+### Linux, \*nix, etc:
 To avoid unexpected exception, *bash* shell is recommended:
 ```sh
 $ cd ~
