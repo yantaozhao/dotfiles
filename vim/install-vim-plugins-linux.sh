@@ -17,7 +17,7 @@
 #----------
 
 if [ ${PWD} != ${HOME} ]; then
-  echo 'Error:place and run this script in $HOME directory. exit'
+  echo 'Error:please put and run this script in $HOME directory. exit'
   exit 1
 fi
 
@@ -28,14 +28,14 @@ myCfgFileUrl=https://raw.githubusercontent.com/yantaozhao/dotfiles/master/vim/vi
 
 # check file and directory
 if [ ! -f ${HOME}/.vimrc ]; then
-  echo '~/.vimrc not exist, exit'
+  echo 'Error:~/.vimrc not exist, exit'
   exit 1
 fi
 
 if [ -d ${HOME}/.vim ]; then
   echo 'directory ~/.vim/ already exist,but I will use it,'
-  echo 'backup is recommended before continue if you run this script the 1st time,'
-  read -p 'press any key to continue if you have done...'
+  echo 'backup is recommended if you run this script the 1st time,'
+  read -p 'press any key to continue if backup have done...'
 else
   mkdir ~/.vim
 fi
@@ -54,8 +54,7 @@ fi
 # source your configuration
 if [ -f ${HOME}/${myCfgFile} ]; then
   if grep -En "source\s+.*${myCfgFile}" ~/.vimrc ; then
-    echo 'Maybe you have done source your configuration in ~/.vimrc already,'
-    read -p 'press any key to continue...'
+    read -p 'Maybe you have done source your configuration in ~/.vimrc,press any key to continue...'
   else
     read -p 'Press any key to append source statement to ~/.vimrc'
     echo '" Source user configuration if available' >> ~/.vimrc
@@ -65,7 +64,7 @@ if [ -f ${HOME}/${myCfgFile} ]; then
     echo '' >> ~/.vimrc
   fi
 else
-  echo 'Error:your configuration file not found,exit'
+  echo 'Error:your configuration file not found, exit'
   exit 1
 fi
 
