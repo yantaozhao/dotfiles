@@ -29,7 +29,7 @@ if exists("g:oslinux")
   "" plugins must be added here: {
   Plugin 'VundleVim/Vundle.vim'  " let Vundle manage Vundle
   Plugin 's3rvac/AutoFenc'
-  "Plugin 'nanotech/jellybeans.vim'
+  Plugin 'nanotech/jellybeans.vim'
   "Plugin 'vim-airline/vim-airline'
   "Plugin 'vim-airline/vim-airline-themes'
   "Plugin 'bling/vim-bufferline'
@@ -226,6 +226,7 @@ if (exists("g:osmswin") && isdirectory(expand("$VIM\\vimfiles\\bundle\\tagbar"))
   "let g:tagbar_ctags_bin = 'C:\Ctags\ctags.exe'
   "let g:tagbar_left = 1  " default right-hand side
   "let g:tagbar_autofocus = 1  " focus Tagbar window when opened
+  let g:tagbar_indent = 3
 endif
 
 " 仿SublimeText的Ctrl-Shift-F #github:dyng/ctrlsf.vim
