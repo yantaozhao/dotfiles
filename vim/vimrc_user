@@ -29,7 +29,7 @@ if exists("g:oslinux")
   "" plugins must be added here: {
   Plugin 'VundleVim/Vundle.vim'  " let Vundle manage Vundle
   Plugin 's3rvac/AutoFenc'
-  Plugin 'nanotech/jellybeans.vim'
+  "Plugin 'nanotech/jellybeans.vim'
   "Plugin 'vim-airline/vim-airline'
   "Plugin 'vim-airline/vim-airline-themes'
   "Plugin 'bling/vim-bufferline'
@@ -122,8 +122,8 @@ set showmatch   " Show matching brackets/parenthesis
 "set matchtime=1
 set scrolloff=1    " Minimum lines to keep above and below cursorline
 "set listchars=tab:\┆\ ,trail:•,extends:~,nbsp:. " eol:¶//Highlight problematic whitespace,with :set list
-set listchars=tab:›\ ,trail:•,extends:~,nbsp:. " eol:¶
-set nolist
+set listchars=tab:⤍\ ,trail:•,extends:~,nbsp:. " eol:¶
+set list
 set title
 
 "set hidden      " Allow buffer switching without saving
