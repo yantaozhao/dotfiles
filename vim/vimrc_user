@@ -1,5 +1,6 @@
 "------------------------------
-" !!!请确认vim已经 set nocompatible (一般在vimrc第一行)!!!
+" * 请确认vim已经 set nocompatible (一般在.vimrc第一行)
+" * add or source this file to ~/.vimrc
 
 " OS type {
 if (has("win32") || has("win64") || has("win95"))
@@ -123,7 +124,7 @@ set showmatch   " Show matching brackets/parenthesis
 set scrolloff=1    " Minimum lines to keep above and below cursorline
 "set listchars=tab:\┆\ ,trail:•,extends:~,nbsp:. " eol:¶//Highlight problematic whitespace,with :set list
 set listchars=tab:⤍\ ,trail:•,extends:~,nbsp:. " eol:¶
-set list
+"set nolist
 set title
 
 "set hidden      " Allow buffer switching without saving
