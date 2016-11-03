@@ -1,6 +1,6 @@
 "------------------------------
-" * 请确认vim已经 set nocompatible (一般在.vimrc第一行)
-" * add or source this file to ~/.vimrc
+" - 请确认vim已经 set nocompatible (一般在.vimrc第一行)
+" - appending `source` this file to ~/.vimrc
 
 " OS type {
 if (has("win32") || has("win64") || has("win95"))
@@ -36,7 +36,8 @@ if exists("g:oslinux")
   "Plugin 'bling/vim-bufferline'
   Plugin 'luochen1990/rainbow'
   "Plugin 'Yggdroot/indentLine'
-  Plugin 'brookhong/cscope.vim'    " 依赖cscope
+  "Plugin 'brookhong/cscope.vim'    " 依赖cscope
+  "Plugin 'steffanc/cscopemaps.vim'
   Plugin 'majutsushi/tagbar'       " 依赖ctags
   "Plugin 'dyng/ctrlsf.vim'         " 依赖ag
   Plugin 'Shougo/neocomplete.vim'  " 依赖lua
@@ -238,7 +239,8 @@ if (exists("g:oslinux") && isdirectory(expand("~/.vim/bundle/cscope.vim")))
       set cscopeverbose
     endif
   endfunction
-  nnoremap <leader>ca :call LoadCscope()<CR> :cscope show<CR>
+  au BufEnter /* call LoadCscope()
+  "nnoremap <leader>ca :call LoadCscope()<CR> :cscope show<CR>
 endif
 
 " 变量函数列表Tagbar #github:majutsushi/tagbar
