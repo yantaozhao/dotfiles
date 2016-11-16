@@ -1,16 +1,26 @@
 ;; emacs 24.5/25.1
 ;; save as file: ~/.emacs
-;; update:2016-9-30, by:YantaoZhao
+;; update:2016-11-16, by:YantaoZhao
 
 
 ;;-----packages-----
 ;; 'M-x package-list-packages' to manually install packages
 
+;; set proxy if need
+;(setq url-proxy-services
+;      '(("http"     . "proxyhost:port")
+;        ("https"    . "proxyhost:port")
+;        ("no_proxy" . "^\\(localhost\\|10.*\\)")))
+
 (require 'package)
 ;; package repositories, see: https://www.emacswiki.org/emacs/ELPA/
 ;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("popkit" . "https://elpa.popkit.org/packages/"))
+;; use archives 1:
+;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;(add-to-list 'package-archives '("popkit" . "https://elpa.popkit.org/packages/"))
+;; or use archives 2:
+;(add-to-list 'package-archives '("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/"))
+(add-to-list 'package-archives '("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/")))
@@ -87,19 +97,19 @@
 ;(setq indent-guide-char "┆")
 
 ;; package:chinese-fonts-setup
+;; command: M-x cfs-edit-profile
 ;; Set font, especially for org-mode, recommendation:
-;; Windows:英文=Dejavu Sans Mono或Consolas, 中文=微软雅黑
-;; Linux:英文=Dejavu Sans Mono, 中文=文泉驿微米黑(apt-get install ttf-wqy-microhei)
+;; Windows:en_font=Dejavu Sans Mono or Consolas, zh_font=Microsoft Yahei
+;; Linux:en_font=Dejavu Sans Mono, zh_font=wenquanyi weimihei(apt-get install ttf-wqy-microhei)
 ;; Mac:...
 (require 'chinese-fonts-setup)
-;; 让 chinese-fonts-setup 随着 emacs 自动生效
 (chinese-fonts-setup-enable)
-;; 让 spacemacs mode-line 中的 Unicode 图标正确显示
+;; let spacemacs mode-line Unicode icon show correctly
 ;(cfs-set-spacemacs-fallback-fonts)
 
 
 ;;-----local adjustment-----
-
+(prefer-coding-system 'utf-8)
 (setq make-backup-files nil)  ;; no backup~ file
 (setq auto-save-default nil)  ;; no #autosave# file
 (global-linum-mode t)         ;; show line number
