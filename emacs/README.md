@@ -3,17 +3,29 @@ YantaoZhao's emacs configuration
 
 
 ## Checklist
-- Tested with Emacs 24.5、25.1 on Linux/Windows
-- Package tagged with [no], means not use it
+- Tested with Emacs 25.x on Linux
+- Package tagged with [no], means not use it by default
 
 
 ## Features
-- Minimum modification to the original emacs
+- Mainly focus on C/C++/Java/... development
+  - For C/C++: using gtags / rtags / cscope
 
 
 ## Installation
 Placed as file:
 - Linux: `"~/.emacs"`
-- Windows: same path as directory `"{HOME}/.emacs.d/"`, i.e. `"{HOME}/.emacs.d/"` and `"{HOME}/.emacs"`
+- Windows: same path as directory `"{HOME}/.emacs.d/"`, i.e. `"{HOME}/.emacs.d/"` and file `"{HOME}/.emacs"`
 - Mac:
+
+Then, install necessary packages.
+
+
+## About Emacs
+Build Emacs from source code on Linux:
+
+```sh
+# emacs 25.x:
+./configure --with-x-toolkit=gtk3 --with-xwidgets
+```
 
