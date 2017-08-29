@@ -1,0 +1,111 @@
+" everything is placed under ~/.vimz
+" to use this configuration, append line `source ~/.vimz/_vimrc_` to ~/.vimrc
+
+" download vim-plug manually:
+" curl -fLo ~/.vimz/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" :PlugInstall
+
+
+set rtp+=~/.vimz
+
+"" #Plugin manager
+call plug#begin('~/.vimz/plugged')
+Plug 's3rvac/AutoFenc'
+Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
+Plug 'tenfyzhong/tagbar-makefile.vim'
+Plug 'henrik/vim-indexed-search'
+Plug 'jkerian/HiCursorWords'
+Plug 'luochen1990/rainbow'
+Plug 'osyo-manga/vim-over'
+Plug 'vim-airline/vim-airline'
+"Plug 'fholgado/minibufexpl.vim'
+Plug 'jeetsukumaran/vim-buffergator'
+Plug 't9md/vim-choosewin'
+Plug 'szw/vim-maximizer'
+"Plug 'justinmk/vim-sneak'
+Plug 'critiqjo/gtags.vim'
+call plug#end()
+
+" list plugins in use to enable customizing
+if !exists("g:my_active_plugins")
+  let g:my_active_plugins=['AutoFenc', 'nerdtree', 'tagbar', 'tagbar-makefile.vim',
+                          \ 'vim-indexed-search', 'HiCursorWords', 'rainbow', 'vim-over',
+                          \ 'vim-airline', 'vim-buffergator', 'vim-choosewin', 'vim-maximizer']
+endif
+
+
+"" #Vim settings
+set nu
+set showcmd
+set hlsearch
+set mouse=a
+
+let mapleader = "\<Space>"
+nnoremap <Space> <Nop>
+
+nmap <Leader>bn :bn<CR>
+nmap <Leader>bp :bp<CR>
+
+
+"" #Plugin settings
+" nerdtree
+if count(g:my_active_plugins, 'nerdtree')
+  nmap <Leader>tn :NERDTreeToggle<CR>
+  " close vim if the only window left open is a NERDTree
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+  let NERDTreeShowBookmarks = 1
+  let NERDTreeIgnore = ['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+  let NERDTreeChDirMode = 0
+  let NERDTreeQuitOnOpen = 1
+  let NERDTreeMouseMode = 2
+  let NERDTreeShowHidden = 1
+  let NERDTreeKeepTreeInNewTab = 1
+  let g:nerdtree_tabs_open_on_gui_startup = 0
+endif
+
+" tagbar
+if count(g:my_active_plugins, 'tagbar')
+  nmap <Leader>tt :TagbarToggle<CR>
+  "let g:tagbar_ctags_bin = 'C:\Ctags\ctags.exe'
+  let g:tagbar_sort = 0  " sort according to order
+  let g:tagbar_indent = 3
+  let g:tagbar_show_linenumbers = 1  " Show absolute line numbers
+  "let g:tagbar_width = 60  " Width of the Tagbar window in characters
+  "let g:tagbar_left = 1  " default right-hand side
+  "let g:tagbar_autofocus = 1 " focus Tagbar window when opened
+endif
+
+" rainbow
+if count(g:my_active_plugins, 'rainbow')
+  let g:rainbow_active = 1
+endif
+
+" vim-airline
+if count(g:my_active_plugins, 'vim-airline')
+  set laststatus=2
+  let g:airline_section_z = '%l:%c%V(%p%%/%L)'  " line:col,percentage
+endif
+
+" vim-buffergator
+if count(g:my_active_plugins, 'vim-buffergator')
+  " the <Leader>b default is :BuffergatorOpen<CR>
+  nnoremap <silent> <Leader>b<CR> :BuffergatorOpen<CR>
+endif
+
+" vim-choosewin
+if count(g:my_active_plugins, 'vim-choosewin')
+  "nmap <C-w> <Plug>(choosewin)
+  nmap <Leader>w     <Plug>(choosewin)
+  nmap <Leader>w<CR> <Plug>(choosewin)
+  let g:choosewin_overlay_enable = 1
+endif
+
+" vim-maximizer
+if count(g:my_active_plugins, 'vim-maximizer')
+  let g:maximizer_set_default_mapping = 0
+  nnoremap <silent><Leader>wm :MaximizerToggle<CR>
+  vnoremap <silent><Leader>wm :MaximizerToggle<CR>gv
+  inoremap <silent><Leader>wm <C-o>:MaximizerToggle<CR>
+endif
+
