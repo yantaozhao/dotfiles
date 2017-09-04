@@ -1,7 +1,7 @@
 ;; emacs 25.x
 ;; Save as file: ~/.emacs
 ;; OS: Linux
-;; Update:2017-08-01, by:YantaoZhao
+;; Update:2017-09-01, by:YantaoZhao
 
 
 ;;------packages------
@@ -74,6 +74,9 @@
 ;(setq indent-guide-char "┆")
 ;;(setq indent-guide-recursive t)
 
+;; package:neotree
+;(require 'neotree)
+
 ;; package:sr-speedbar
 (require 'sr-speedbar)
 ;(add-hook 'after-init-hook '(lambda () (sr-speedbar-toggle)))
@@ -125,7 +128,7 @@
 
 ;; package:rscope [no]
 ;; Download from: https://github.com/rjarzmik/rscope
-;; Instead of package xcscope
+;; Instead of package xcscope,etc
 ;(add-to-list 'load-path "~/.emacs.d/rscope-master")
 ;(load "rscope.el")
 ;(load "rscope-nav.el")
@@ -149,7 +152,7 @@
                    (abbreviate-file-name (buffer-file-name))
                    "%b"))))
 
-;; start maximized (cross-platf)
+;; start maximized (cross-platform)
 (add-hook 'window-setup-hook 'toggle-frame-maximized t)
 
 ;; scroll(less "jumpy" than defaults)
@@ -170,6 +173,28 @@
 ;; For Windows: make sure PuTTY and plink.exe is on your PATH
 (setq password-cache-expiry nil)
 
+;; window switching
+(windmove-default-keybindings 'meta)
+
+;; open file with external program
+;; See: http://emacsredux.com/blog/2013/03/27/open-file-in-external-program/
+(defun open-current-file-with-external-gvim (arg)
+  "Open visited file in external program.
+  With a prefix ARG always prompt for command to use."
+  (interactive "P")
+  (when buffer-file-name
+    (async-shell-command (concat
+    ;(shell-command (concat
+                      ;(cond
+                        ;((and (not arg) (eq system-type 'darwin)) "open")
+                        ;((and (not arg) (member system-type '(gnu gnu/linux gnu/kfreebsd))) "xdg-open")
+                        ;(t (read-shell-command "Open current file with program: ")))
+                      "gvim"
+                      " "
+                      buffer-file-name
+                      " "
+                      (shell-quote-argument (concat "+" (number-to-string (line-number-at-pos))))))))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -177,7 +202,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-	(ggtags evil rtags undo-tree tabbar sr-speedbar rainbow-delimiters helm ecb company chinese-fonts-setup)))
+	(neotree ggtags evil rtags undo-tree tabbar sr-speedbar rainbow-delimiters helm ecb company chinese-fonts-setup)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
