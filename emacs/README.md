@@ -17,23 +17,25 @@ Build Emacs from source code on Linux:
 
 ### Checklist
 - Tested with Emacs 25.x on Linux
-- Package tagged with [no], means not use it by default
+- ~~Package tagged with [no], means not use it by default~~
 
 
 ### Features
 - Mainly focus on C/C++/... development
-  - For C/C++: using gtags / rtags / cscope
+  - For C/C++: using gtags / etags / rtags
 
 
 ### Installation
 Place `.emacs` as file:
 - Linux: `"~/.emacs"`
-- Windows: same path as directory `"{HOME}/.emacs.d/"`, i.e. `"{HOME}/.emacs.d/"` and file `"{HOME}/.emacs"`
-- Mac:
+- ~~Windows: same path as directory `"{HOME}/.emacs.d/"`, i.e. `"{HOME}/.emacs.d/"` and file `"{HOME}/.emacs"`~~
+- ~~Mac:~~
 
 Then, install necessary packages.
 
 
 
 ## spacemacs
+
+...
 

@@ -4,6 +4,10 @@
 ;; Update:2017-09-02, by:YantaoZhao
 
 
+;;------the earliest------
+(setq gc-cons-threshold 8000000)
+
+
 ;;------packages------
 ;; 'M-x package-list-packages' then manually install packages
 
@@ -60,13 +64,6 @@
     (helm-mode 1)
     (helm-autoresize-mode 1))
 
-(use-package helm-swoop
-  :ensure t
-  :defer 1
-  :config
-    (setq helm-swoop-move-to-line-cycle nil)
-    (evil-leader/set-key "vo" 'helm-swoop))
-
 (use-package evil-leader
   :ensure t
   :commands global-evil-leader-mode
@@ -74,7 +71,7 @@
     (add-hook 'after-init-hook 'global-evil-leader-mode)
   :config
     (evil-leader/set-leader "<SPC>")
-    (evil-leader/set-key "<SPC>" 'helm-M-x)
+    (evil-leader/set-key "<SPC>" 'helm-M-x)  ; keybinding for helm
     (which-key-add-key-based-replacements "SPC t" "toggle"))
 
 (use-package evil
@@ -114,6 +111,13 @@
     (eval-after-load "evil" '(setq expand-region-contract-fast-key "c"))
     (evil-leader/set-key "ve" 'er/expand-region)
     (which-key-add-key-based-replacements "SPC v" "visual"))
+
+(use-package helm-swoop
+  :ensure t
+  :defer 1
+  :config
+    (setq helm-swoop-move-to-line-cycle nil)
+    (evil-leader/set-key "vo" 'helm-swoop))
 
 (use-package which-key
   :ensure t
@@ -178,6 +182,12 @@
   :ensure t
   :after (evil))
 
+(use-package visual-regexp-steroids
+  :ensure t
+  :defer 1
+  :config
+    (evil-leader/set-key "vr" 'vr/query-replace))
+
 (use-package window-numbering
   :ensure t
   :commands window-numbering-mode
@@ -228,6 +238,7 @@
   :config
     (setq imenu-list-auto-resize t)
     (setq imenu-list-idle-update-delay 2)
+    (setq imenu-list-focus-after-activation t)
     (evil-leader/set-key "ti" 'imenu-list-smart-toggle)
     (evil-set-initial-state 'imenu-list-major-mode 'emacs))
 
@@ -240,7 +251,7 @@
   :defer 3)
 
 (use-package tabbar
-  :disabled
+  :ensure t
   :config
     (setq tabbar-use-images nil))
 
