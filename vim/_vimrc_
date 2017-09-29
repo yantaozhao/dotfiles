@@ -69,15 +69,17 @@ set cindent
 "set backspace=indent,eol,start  " Backspace for dummies
 
 set hlsearch
-"set ignorecase  " Case insensitive search,use \c or \C to override it
-set smartcase   " Case sensitive when upperCase present,when set ignorecase
+set ignorecase  " Case insensitive search. Use \c or \C to override it when you need
+set smartcase   " In ignorecase mode: if upperCase present,case sensitive; else insensitive
 set incsearch   " Find as you type search
 
-let mapleader = "\<Space>"
-nnoremap <Space> <Nop>
+"let mapleader = "\<Space>"
+"nnoremap <Space> <Nop>
+map <Space> <Leader>
+
 nmap <Leader>bn :bn<CR>
 nmap <Leader>bp :bp<CR>
-
+"nnoremap ; :
 nnoremap ZZ :x
 " search selected strings in visual mode,default except backslash,see :help magic
 " yank and search very nomagic {
@@ -88,6 +90,7 @@ vnoremap <Leader># y?\V<C-r>"
 " ctags setting
 set tags=tags;
 set autochdir
+nnoremap <c-]> g<c-]>
 
 set title
 "set confirm
@@ -120,8 +123,8 @@ if count(g:my_customizing_plugins, 'tagbar')
   let g:tagbar_show_linenumbers = 1  " Show absolute line numbers
   "let g:tagbar_width = 60  " Width of the Tagbar window in characters
   "let g:tagbar_left = 1  " default right-hand side
-  "let g:tagbar_autofocus = 1 " focus Tagbar window when opened
-  autocmd FileType c,cpp nested :TagbarOpen
+  let g:tagbar_autofocus = 1 " focus Tagbar window when opened
+  "autocmd FileType c,cpp nested :TagbarOpen
 endif
 
 " vim-indexed-search
