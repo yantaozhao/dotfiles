@@ -11,7 +11,7 @@
  )
  
  source $ZSH/oh-my-zsh.sh
-@@ -92,3 +96,8 @@
+@@ -92,3 +96,9 @@
  # Example aliases
  # alias zshconfig="mate ~/.zshrc"
  # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -20,3 +20,4 @@
 +alias l='ls -alF'
 +alias la='ls -aF'
 +alias ll='ls -lF'
++unsetopt share_history
