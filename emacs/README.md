@@ -1,41 +1,30 @@
-# zyt-emacs-cfg
+# zyt's emacs configuration
 YantaoZhao's emacs configuration
 
 
 
 ## About Emacs
-Build Emacs from source code on Linux:
+
+Two way to install emacs on Linux:
+
+1. Build Emacs from source code:
 
 ```sh
 # emacs 25.x:
 ./configure --with-x-toolkit=gtk3 --with-xwidgets
 ```
 
+2. Or using ppa: https://launchpad.net/~ubuntu-elisp/+archive/ubuntu/ppa
 
 
-## emacs
 
-### Checklist
-- Tested with Emacs 25.x on Linux
-- ~~Package tagged with [no], means not use it by default~~
+## Installation
 
+Put `.emacs` as file:
 
-### Features
-- Mainly focus on C/C++/... development
-  - For C/C++: using gtags / etags / rtags
-
-
-### Installation
-Place `.emacs` as file:
 - Linux: `"~/.emacs"`
-- ~~Windows: same path as directory `"{HOME}/.emacs.d/"`, i.e. `"{HOME}/.emacs.d/"` and file `"{HOME}/.emacs"`~~
+- Windows: same path as directory `"%AppData%/.emacs.d/"`, i.e. `"%AppData%/.emacs.d/"` and file `"%AppData%/.emacs"`
 - ~~Mac:~~
 
 Then, install necessary packages.
-
-
-
-## spacemacs
-
-...
 

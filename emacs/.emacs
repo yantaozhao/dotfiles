@@ -1,7 +1,8 @@
 ;; emacs 25.x
 ;; Save as file: ~/.emacs
-;; OS: Linux
-;; Update:2017-09-02, by:YantaoZhao
+;;   Linux: ~
+;;   Windows: %AppData%
+;; Update:2018-02-28, by:YantaoZhao
 
 
 ;;------the earliest------
@@ -9,7 +10,9 @@
 
 
 ;;------packages------
-;; 'M-x package-list-packages' then manually install packages
+;; 'M-x package-list-packages'
+;; 'M-x package-refresh-contents'
+;; then manually install packages
 
 ;; use proxy if needed
 ;(setq url-proxy-services
@@ -40,6 +43,8 @@
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (message "Error: Please install `use-package` first!"))
+(eval-when-compile
+  (require 'use-package))
 
 ;; command: M-x cnfonts-edit-profile
 ;; Set fonts. e.g. for org-mode, recommendation:
@@ -259,9 +264,22 @@
   :disabled
   :pin melpa)
 
+(use-package markdown-mode
+  :ensure t
+  :mode (("\\.md\\'" . gfm-mode)
+         ("\\.markdown\\'" . gfm-mode))
+  :init (setq markdown-command "multimarkdown")
+  :config
+    (setq markdown-fontify-code-blocks-natively t))
+
+(use-package modern-cpp-font-lock
+  :ensure t
+  :init
+    (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
+
 ;; Install `global` from source code: www.gnu.org/software/global/
 (use-package ggtags
-  :ensure t
+  :disabled
   :commands ggtags-mode
   :init
     (add-hook 'c-mode-common-hook
@@ -275,7 +293,7 @@
 
 ;; etags: recommend using `ctags -e ...` to generate TAGS
 (use-package etags-table
-  :ensure t
+  :disabled
   :after ggtags
   :config
     (setq etags-table-search-up-depth 10)
@@ -287,7 +305,7 @@
         '(evil-set-initial-state 'xref--xref-buffer-mode 'emacs))))
 
 (use-package rtags
-  :ensure t
+  :disabled
   :commands rtags-start-process-unless-running
   :init
     (if (executable-find "rdm")
@@ -303,6 +321,20 @@
           (add-hook 'rtags-jump-hook 'evil-set-jump)
           (evil-set-initial-state 'rtags-mode 'emacs)))))
 
+;(use-package dtrt-indent
+;  :disabled
+;  :config
+;    (dtrt-indent-mode t))
+
+;; Use command 'M-x auto-package-update-now' to update packages now
+(use-package auto-package-update
+  :ensure t
+  :defer 3
+  :config
+    (setq auto-package-update-interval 180)
+    (setq auto-package-update-delete-old-versions t)
+    (setq auto-package-update-prompt-before-update t))
+
 
 ;;------emacs adjustment------
 (prefer-coding-system 'utf-8)
@@ -311,10 +343,11 @@
 (global-linum-mode t)         ; show line number
 
 ;; CC Mode
-(setq-default c-default-style "bsd"
-              c-basic-offset 4
-              tab-width 4
-              indent-tabs-mode t)
+;; Also see package 'dtrt-indent'
+(setq-default c-default-style "bsd")
+              ;tab-width 4
+              ;indent-tabs-mode nil)
+(defvaralias 'c-basic-offset 'tab-width)
 
 ;; display filepath in the title
 (setq frame-title-format
