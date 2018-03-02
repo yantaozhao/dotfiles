@@ -24,8 +24,10 @@
 ;; Package repositories, see: https://www.emacswiki.org/emacs/ELPA/
 ;; Option 1, official site:
 ;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t) ; Org-mode repository
 ;; Option 2, melpa mirror:
 (add-to-list 'package-archives '("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))
+(add-to-list 'package-archives '("org" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/") t) ; Org-mode repository
 ;; Option 3, melpa mirror:
 ;(add-to-list 'package-archives '("popkit" . "https://elpa.popkit.org/packages/"))
 ;; Other option, marmalade is not recommended:
@@ -263,6 +265,22 @@
 (use-package undo-tree
   :disabled
   :pin melpa)
+
+;; 'M-x org-version' to check org-mode version
+(use-package org
+  :ensure org-plus-contrib
+  :pin org)
+
+;; org-mode official exporter: 'C-c C-e m *'
+;(eval-after-load "org"
+;  '(require 'ox-md nil t))
+
+;; 'M-x org-gfm-export-to-markdown' to export Org to gfm markdown. NOT 'C-c C-e m'
+(use-package ox-gfm
+  :ensure t
+  :config
+    (eval-after-load "org"
+      '(require 'ox-gfm nil t)))
 
 (use-package markdown-mode
   :ensure t
