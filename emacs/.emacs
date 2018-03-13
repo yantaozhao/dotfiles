@@ -361,10 +361,10 @@
 (global-linum-mode t)         ; show line number
 
 ;; CC Mode
-;; Also see package 'dtrt-indent'
-(setq-default c-default-style "bsd")
-              ;tab-width 4
-              ;indent-tabs-mode nil)
+;; Or maybe have a look at package 'dtrt-indent'
+(setq-default c-default-style "bsd"
+              tab-width 4
+              indent-tabs-mode nil)
 (defvaralias 'c-basic-offset 'tab-width)
 
 ;; display filepath in the title
