@@ -6,3 +6,5 @@ if [[ $- == *i* ]]; then
     bind '"\e[A": history-search-backward'
     bind '"\e[B": history-search-forward'
 fi
+# Tab completion case insensitive
+bind 'set completion-ignore-case on'

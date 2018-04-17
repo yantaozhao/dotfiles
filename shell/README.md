@@ -1,4 +1,3 @@
 # linux shell
 
-`~/.bashrc` : bash
-`~/.zshrc` : zsh
+`~/.bashrc` : bash dot file
