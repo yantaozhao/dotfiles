@@ -356,9 +356,10 @@
 
 ;;------emacs adjustment------
 (prefer-coding-system 'utf-8)
-(setq make-backup-files nil)  ; no backup~ file
-(setq auto-save-default nil)  ; no #autosave# file
-(global-linum-mode t)         ; show line number
+(setq make-backup-files nil)   ; no backup~ file
+(setq auto-save-default nil)   ; no #autosave# file
+(global-linum-mode t)          ; show line number
+(setq inhibit-splash-screen t) ; disable the welcome screen
 
 ;; CC Mode
 ;; Or maybe have a look at package 'dtrt-indent'
@@ -380,7 +381,7 @@
 ;(setq mouse-wheel-scroll-amount '(3 ((shift) . 3)))  ; 3 line at a time
 (setq mouse-wheel-progressive-speed nil)  ; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't)        ; scroll window under mouse
-;(setq scroll-step 3)  ; keyboard scroll 3 line at a time
+(setq scroll-step 3)  ; keyboard scroll 3 line at a time
 
 ;; keep highlight from isearch
 ;(setq lazy-highlight-cleanup nil)
