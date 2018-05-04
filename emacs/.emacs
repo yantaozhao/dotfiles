@@ -95,7 +95,11 @@
     (evil-select-search-module 'evil-search-module 'evil-search)
     (define-key evil-normal-state-map "ZZ" nil)
     (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
-    (evil-leader/set-key "." 'repeat))  ; repeat "C-x z"
+    (evil-leader/set-key "." 'repeat)  ; repeat "C-x z"
+    ;; enter emacs-state when switch to evil's insert-state
+    (setq evil-insert-state-map (make-sparse-keymap))
+    (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-o") 'evil-execute-in-normal-state))
 
 (use-package evil-visualstar
   :ensure t
