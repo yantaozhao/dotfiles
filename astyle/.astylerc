@@ -1,0 +1,24 @@
+#Option file:
+# Linux: "$HOME/.astylerc"
+# Windows: "%APPDATA%\astylerc"
+--style=allman
+--indent=spaces=4
+--align-pointer=name
+--align-reference=name
+--max-code-length=120
+--attach-extern-c
+--attach-closing-while
+--indent-namespaces
+--indent-col1-comments
+--pad-oper
+--pad-header
+--unpad-paren
+--break-closing-braces
+--convert-tabs
+--mode=c
+# astyle >= v3.1:
+#--attach-return-type
+#--attach-return-type-dec
+# Command-line option. Do not retain a backup of the original file:
+-n
+
