@@ -9,20 +9,27 @@
  
  # Set list of themes to pick from when loading at random
  # Setting this variable when ZSH_THEME=random will cause zsh to load
-@@ -64,6 +64,10 @@
+@@ -64,6 +64,9 @@
  # Add wisely, as too many plugins slow down shell startup.
  plugins=(
    git
 +  colored-man-pages
-+  extract
 +  zsh-autosuggestions
 +  zsh-syntax-highlighting
  )
  
  source $ZSH/oh-my-zsh.sh
-@@ -96,3 +100,5 @@
+@@ -95,3 +99,13 @@
  # Example aliases
  # alias zshconfig="mate ~/.zshrc"
  # alias ohmyzsh="mate ~/.oh-my-zsh"
 +
 +# unsetopt share_history
++
++# Alias for fd and ripgrep
++if command -v fd &> /dev/null; then
++  alias fd="fd -HI"
++fi
++if command -v rg &> /dev/null; then
++  alias rg="rg -u"
++fi
