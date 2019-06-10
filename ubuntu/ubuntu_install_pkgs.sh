@@ -15,7 +15,7 @@ while getopts ":f" opt; do
     esac
 done
 
-read -p "Run `sudo $APTCMD update`? [y/N]" yn
+read -p "Run: sudo $APTCMD update? [y/N]" yn
 if [[ "$yn" = "y" ]] || [[ "$yn" = "Y" ]]; then
     sudo $APTCMD update
 fi
