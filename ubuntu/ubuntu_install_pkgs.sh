@@ -3,6 +3,7 @@
 ## Install packages as startup on a new ubuntu os.
 ## Usage: bash this_script.sh [-f]
 
+APTCMD=apt
 
 FORCEMODE=
 while getopts ":f" opt; do
@@ -14,18 +15,18 @@ while getopts ":f" opt; do
     esac
 done
 
-read -p "Run `sudo apt update`? [y/N]" yn
+read -p "Run `sudo $APTCMD update`? [y/N]" yn
 if [[ "$yn" = "y" ]] || [[ "$yn" = "Y" ]]; then
-    sudo apt update
+    sudo $APTCMD update
 fi
 
-# sudo apt install wget
-# sudo apt install curl
-sudo apt install aria2
+# sudo $APTCMD install wget
+# sudo $APTCMD install curl
+sudo $APTCMD install aria2
 
 ## git:
-sudo apt install git
-sudo apt install gitk
+sudo $APTCMD install git
+sudo $APTCMD install gitk
 if [[ ! -f $HOME/.gitalias.txt ]]; then
     read -p "Configure git using gitalias? [y/N]" yn
     if [[ "$yn" = "y" ]] || [[ "$yn" = "Y" ]]; then
@@ -36,19 +37,19 @@ if [[ ! -f $HOME/.gitalias.txt ]]; then
     fi
 fi
 
-sudo apt install bash-completion
-sudo apt install vim
-sudo apt install tree
-sudo apt install build-essential
-sudo apt install autoconf automake libtool
-sudo apt install make
-# sudo apt install cmake
-sudo apt install gcc g++ gdb
-sudo apt install openssh-client openssh-server
-sudo apt install openjdk-8-jdk
+sudo $APTCMD install bash-completion
+sudo $APTCMD install vim
+sudo $APTCMD install tree
+sudo $APTCMD install build-essential
+sudo $APTCMD install autoconf automake libtool
+sudo $APTCMD install make
+# sudo $APTCMD install cmake
+sudo $APTCMD install gcc g++ gdb
+sudo $APTCMD install openssh-client openssh-server
+sudo $APTCMD install openjdk-8-jdk
 
 ## tmux:
-sudo apt install tmux
+sudo $APTCMD install tmux
 # TODO: .tmux.conf
 
 ## zsh, ripgrep, fd:
@@ -60,7 +61,7 @@ else
 fi
 
 ## zsh:
-sudo apt install zsh
+sudo $APTCMD install zsh
 ZSHRC="$HOME/.zshrc"
 if [[ ! -d $HOME/.oh-my-zsh ]]; then
     read -p "Configure zsh using oh-my-zsh? [y/N]" yn
@@ -117,8 +118,8 @@ if [[ ! `command -v vscodium` ]]; then
         echo 'installing vscodium'
         wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | sudo apt-key add -
         echo 'deb https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/repos/debs/ vscodium main' | sudo tee --append /etc/apt/sources.list.d/vscodium.list
-        sudo apt update
-        sudo apt install vscodium
+        sudo $APTCMD update
+        sudo $APTCMD install vscodium
     fi
 fi
 
