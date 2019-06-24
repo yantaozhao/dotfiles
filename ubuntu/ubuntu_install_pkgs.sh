@@ -20,7 +20,7 @@ if [[ "$yn" = "y" ]] || [[ "$yn" = "Y" ]]; then
     sudo $APTCMD update
 fi
 
-# sudo $APTCMD install wget
+sudo $APTCMD install wget
 # sudo $APTCMD install curl
 sudo $APTCMD install aria2
 
@@ -46,7 +46,12 @@ sudo $APTCMD install make
 # sudo $APTCMD install cmake
 sudo $APTCMD install gcc g++ gdb
 sudo $APTCMD install openssh-client openssh-server
-sudo $APTCMD install openjdk-8-jdk
+
+# jdk
+read -p "Install openjdk-8? [y/N]" yn
+if [[ "$yn" = "y" ]] || [[ "$yn" = "Y" ]]; then
+    sudo $APTCMD install openjdk-8-jdk
+fi
 
 ## tmux:
 sudo $APTCMD install tmux
@@ -113,7 +118,7 @@ popd
 
 ## vscodium:
 if [[ ! `command -v vscodium` ]]; then
-    read -p "Install vscodium? [y/N]" yn
+    read -p "Install vscodium from PPA? [y/N]" yn
     if [[ "$yn" = "y" ]] || [[ "$yn" = "Y" ]]; then
         echo 'installing vscodium'
         wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | sudo apt-key add -
