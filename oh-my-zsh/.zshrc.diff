@@ -23,7 +23,7 @@
  
  source $ZSH/oh-my-zsh.sh
  
-@@ -97,3 +102,30 @@
+@@ -97,3 +102,33 @@
  # Example aliases
  # alias zshconfig="mate ~/.zshrc"
  # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -54,3 +54,6 @@
 +if command -v rg &> /dev/null; then
 +  alias rg="rg -u"
 +fi
++
++# Added automatically by 'junegunn/fzf'
++[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
