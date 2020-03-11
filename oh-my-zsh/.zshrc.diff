@@ -3,28 +3,49 @@
 @@ -8,7 +8,7 @@
  # load a random theme each time oh-my-zsh is loaded, in which case,
  # to know which specific one was loaded, run: echo $RANDOM_THEME
- # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 -ZSH_THEME="robbyrussell"
 +ZSH_THEME="af-magic"
  
  # Set list of themes to pick from when loading at random
  # Setting this variable when ZSH_THEME=random will cause zsh to load
-@@ -64,6 +64,9 @@
+@@ -68,7 +68,12 @@
+ # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+ # Example format: plugins=(rails git textmate ruby lighthouse)
  # Add wisely, as too many plugins slow down shell startup.
- plugins=(
-   git
+-plugins=(git)
++plugins=(
++  docker
 +  colored-man-pages
 +  zsh-autosuggestions
 +  zsh-syntax-highlighting
- )
++)
  
  source $ZSH/oh-my-zsh.sh
-@@ -95,3 +99,13 @@
+ 
+@@ -97,3 +102,30 @@
  # Example aliases
  # alias zshconfig="mate ~/.zshrc"
  # alias ohmyzsh="mate ~/.oh-my-zsh"
 +
-+# unsetopt share_history
++# enable color support of ls and also add handy aliases
++if [ -x /usr/bin/dircolors ]; then
++  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
++  alias ls='ls --color=auto'
++  #alias dir='dir --color=auto'
++  #alias vdir='vdir --color=auto'
++
++  alias grep='grep --color=auto'
++  alias fgrep='fgrep --color=auto'
++  alias egrep='egrep --color=auto'
++fi
++# some more ls aliases
++alias la='ls -aFh'
++alias ll='ls -lFh'
++alias l='ls -alFh'
++
++
++#unsetopt share_history
 +
 +# Alias for fd and ripgrep
 +if command -v fd &> /dev/null; then
