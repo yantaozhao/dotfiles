@@ -1,6 +1,4 @@
 # tweak `ohmyzsh`
 
-https://github.com/ohmyzsh/ohmyzsh
 
-1. `install_3rd_plugins.sh`
-2. fine tune `~/.zshrc`
+After [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh) installed, run this python script to tweak ohmyzsh rcfile.
