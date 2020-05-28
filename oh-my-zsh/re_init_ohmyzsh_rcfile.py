@@ -163,7 +163,7 @@ def git_clone_or_pull(url_list):
             print(f'updating {url}')
             _run_cmd(f'cd {plugin_dir} && git pull')
         else:
-            _run_cmd(f'git clone {url}')
+            _run_cmd(f'git clone --depth 1 {url}')
             print(f'{plugin_dir} cloned.')
     os.chdir(oldpwd)
 
