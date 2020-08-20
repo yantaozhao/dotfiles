@@ -11,9 +11,10 @@ fi
 bind 'set completion-ignore-case on'
 
 # Colored manpage:
+. ~/.colored-man-pages.bash
 # sudo apt install most
-if [ -x /usr/bin/most ]; then
-  #export PAGER="most"
-  alias man='PAGER="most" man'
-fi
+#if [ -x /usr/bin/most ]; then
+#  #export PAGER="most"
+#  alias man='PAGER="most" man'
+#fi
 
