@@ -12,11 +12,12 @@ from io import StringIO
 # the plugins order matters:
 g_use_ohmyzsh_builtin_plugins = [
     'colored-man-pages',
-    'docker',
+    # 'docker',
 ]
 g_use_third_party_custom_plugins = [
     f'https://github.com/zsh-users/zsh-autosuggestions.git',
-    f'https://github.com/zsh-users/zsh-syntax-highlighting.git',
+    # f'https://github.com/zsh-users/zsh-syntax-highlighting.git',
+    f'https://github.com/zdharma/fast-syntax-highlighting.git',
     f'https://github.com/zsh-users/zsh-history-substring-search.git',
     f'https://github.com/zsh-users/zsh-completions.git',
 ]
@@ -37,7 +38,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 # some more ls aliases
 alias la='ls -a'
-alias ll='ls -lh'
+alias ll='ls -alh'
 '''
 ### tweak areas END ###
 
@@ -104,8 +105,12 @@ def tweak_zshrc(zshrc_content_lines):
 
         # theme:
         if line.startswith('ZSH_THEME='):
-            if g_use_theme is not None:
-                line = f'ZSH_THEME="{g_use_theme}"\n'
+            try:
+                g_use_theme
+                if g_use_theme is not None:
+                    line = f'ZSH_THEME="{g_use_theme}"\n'
+            except:
+                pass
 
         new_content.append(line)
 
