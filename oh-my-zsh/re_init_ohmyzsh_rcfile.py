@@ -22,7 +22,7 @@ g_use_third_party_custom_plugins = [
     f'https://github.com/zsh-users/zsh-completions.git',
 ]
 # one of ohmyzsh builtin theme. set `None` to use the default theme
-g_use_theme = 'af-magic'  # 'fishy'
+g_use_theme = 'fishy'  # 'af-magic'
 # extended config will be append to .zshrc
 g_use_extended_cfg = '''
 # unalias oh-my-zsh's alias
