@@ -1,6 +1,6 @@
 " Everything is put under "~/.vimz/", as vim runtimepath
 "
-" Steps:
+" Install:
 "
 " 0. ~/.vimrc : "cp /etc/vim/vimrc ~/.vimrc"
 "
@@ -8,7 +8,7 @@
 " see: https://github.com/junegunn/vim-plug
 " it maybe like: curl -fLo ~/.vimz/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 "
-" 2. source this file inside "~/.vimrc": e.g.: append line `source ~/.vimz/_vimrc` to "~/.vimrc"
+" 2. source this file inside "~/.vimrc": i.e.: append line `source ~/.vimz/_vimrc` to "~/.vimrc"
 "
 " 3. start vim, and run:
 "   :PlugInstall
@@ -17,13 +17,110 @@
 set rtp+=~/.vimz
 
 call plug#begin('~/.vimz/plugged')
-Plug 'preservim/nerdtree'
+Plug 'preservim/nerdtree', { 'on': ['NERDTree', 'NERDTreeToggle'] }
+"Plug 'justinmk/vim-dirvish'
+Plug 'preservim/tagbar', { 'on': ['TagbarOpen', 'TagbarToggle'] }  " use ctags
+Plug 'google/vim-searchindex'
+"Plug 'sheerun/vim-polyglot'
+Plug 'luochen1990/rainbow'
+"Plug 'mhinz/vim-signify'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+"Plug 'itchyny/lightline.vim'
+Plug 'Raimondi/delimitMate'
+Plug 'markonm/traces.vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'ctrlpvim/ctrlp.vim'
+"Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+Plug 'Yggdroot/LeaderF'
+"Plug 'mhinz/vim-grepper'
+"Plug 'brooth/far.vim'
+"Plug 'ludovicchabant/vim-gutentags'
+"Plug 'jsfaint/gen_tags.vim'
+"Plug 'neomake/neomake'
+"Plug 'dense-analysis/ale'
+Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
+"Plug 'Shougo/echodoc.vim'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
+" 
 
+
+" file encoding {
+"set encoding=utf-8
+"set fileencodings=ucs-bom,utf-8,ASCII,gbk,cp936,gb18030,big5,euc-jp,euc-kr,default,latin1
+" }
+
+set showcmd             " Show (partial) command in status line.
+set showmatch           " Show matching brackets.
+set ignorecase          " Do case insensitive matching
+set smartcase           " Do smart case matching
+set incsearch           " Incremental search
+"set mouse=a            " Enable mouse usage (all modes)
+set hls
+set nu
+"set relativenumber number
+"autocmd InsertEnter * :set norelativenumber number
+"autocmd InsertLeave * :set relativenumber number
+"set showmode        " Display the current mode
+set scrolloff=2     " Minimum lines to keep above and below cursorline
+
+"set wrap            " wrap long lines
+set shiftwidth=4    " indent equals 4 spaces
+set tabstop=4       " An indentation every 4 columns
+"set expandtab       " Tabs are spaces, not tabs
+"set softtabstop=4   " Let backspace delete indent
+set autoindent
+set cindent
+"set backspace=indent,eol,start  " Backspace for dummies
+
+"set title
+"set confirm
+"set nobackup    " backup~ file
+"set noundofile  " .un~ file
+
+set updatetime=400
+
+" Uncomment the following to have Vim jump to the last position when reopening a file
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+
+" mapleader \
 map <Space> <Leader>
 nmap <Leader><Space> :
 
-if isdirectory("plugged/nerdtree")
+nnoremap ZZ :x
+nnoremap <C-e> 3<C-e>
+nnoremap <C-y> 3<C-y>
+
+" search selected strings in visual mode,default except backslash,see :help magic
+" yank and search very nomagic {
+vnoremap <Leader>* y/\V<C-r>"
+vnoremap <Leader># y?\V<C-r>"
+" }
+vnoremap <C-c> "+y
+inoremap <C-v> <ESC>"+pa
+
+" go between windows
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" #ctags setting
+" `ctags -R --fields=+SinKaz --c-kinds=+p --c++-kinds=+p *`
+"set tags=tags;
+"set autochdir
+"nnoremap <C-]> g<C-]>
+"nnoremap <Leader><C-]> <C-w>g<C-]>
+"nnoremap <Leader><C-]> :tabnew %<CR>g<C-]>
+
+
+function MyCheckIsTheDirExists(d)
+  return isdirectory(expand("~/.vimz/plugged/" .. a:d))
+endfunction
+
+if MyCheckIsTheDirExists("nerdtree")
   nmap <Leader>tn :NERDTreeToggle<CR>
   " Exit Vim if NERDTree is the only window left.
   autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
@@ -35,3 +132,52 @@ if isdirectory("plugged/nerdtree")
   let NERDTreeShowHidden = 1
 endif
 
+if MyCheckIsTheDirExists("tagbar")
+  nmap <Leader>tt :TagbarToggle<CR>
+  "let g:tagbar_ctags_bin = 'C:\Ctags\ctags.exe'
+  let g:tagbar_sort = 0  " sort according to order
+  let g:tagbar_indent = 3
+  let g:tagbar_show_linenumbers = 1  " Show absolute line numbers
+  "let g:tagbar_left = 1  " default right-hand side
+  let g:tagbar_autofocus = 1 " focus Tagbar window when opened
+  if 0 || executable("ctags")
+    autocmd FileType c,cpp nested :TagbarOpen
+  endif
+endif
+
+if MyCheckIsTheDirExists("rainbow")
+  let g:rainbow_active = 1  "set to 0 if you want to enable it later via :RainbowToggle
+endif
+
+if MyCheckIsTheDirExists("vim-airline")
+  set laststatus=2
+  let g:airline_section_z = '%l:%c%V(%p%%/%L)'  " line:col,percentage
+endif
+
+if MyCheckIsTheDirExists("vim-airline-themes")
+  let g:airline_theme='tomorrow'
+endif
+
+if MyCheckIsTheDirExists("vim-easymotion")
+  nmap f <Plug>(easymotion-s)
+endif
+
+if MyCheckIsTheDirExists("LeaderF")
+  "let g:Lf_ShortcutF = '<C-P>'
+  "let g:Lf_WindowPosition = 'popup'
+  "let g:Lf_PreviewInPopup = 1
+endif
+
+if MyCheckIsTheDirExists("ctrlp.vim") && 0
+  let g:ctrlp_map = '<c-p>'
+  let g:ctrlp_cmd = 'CtrlP'
+  let g:ctrlp_working_path_mode = 'ra'
+  let g:ctrlp_use_caching = 0
+  let g:ctrlp_clear_cache_on_exit = 1
+  set wildignore+=*/tmp/*,*.so,*.a,*.o,*.swp,*.zip
+  set wildignore+=*\\tmp\\*,*.swp,*.zip,*.dll,*.exe
+endif
+
+if MyCheckIsTheDirExists("vim-cpp-enhanced-highlight")
+  let g:cpp_class_decl_highlight = 1
+endif
