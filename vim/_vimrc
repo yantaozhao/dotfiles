@@ -21,29 +21,30 @@ Plug 'preservim/nerdtree', { 'on': ['NERDTree', 'NERDTreeToggle'] }
 "Plug 'justinmk/vim-dirvish'
 Plug 'preservim/tagbar', { 'on': ['TagbarOpen', 'TagbarToggle'] }  " use ctags
 Plug 'google/vim-searchindex'
-"Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-sleuth'
 Plug 'luochen1990/rainbow'
 "Plug 'mhinz/vim-signify'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-"Plug 'itchyny/lightline.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'markonm/traces.vim'
 Plug 'easymotion/vim-easymotion'
-Plug 'ctrlpvim/ctrlp.vim'
+"Plug 'mg979/vim-visual-multi'
+Plug 'Yggdroot/indentLine'
 "Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'Yggdroot/LeaderF'
 "Plug 'mhinz/vim-grepper'
-"Plug 'brooth/far.vim'
+Plug 'brooth/far.vim'
 "Plug 'ludovicchabant/vim-gutentags'
-"Plug 'jsfaint/gen_tags.vim'
-"Plug 'neomake/neomake'
-"Plug 'dense-analysis/ale'
+Plug 'dense-analysis/ale'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
-"Plug 'Shougo/echodoc.vim'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+if executable("node")
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}  " use nodejs
+endif
+Plug 'neoclide/coc-snippets'
+Plug 'joshdick/onedark.vim'
 call plug#end()
-" 
+"
 
 
 " file encoding {
@@ -63,11 +64,11 @@ set nu
 "autocmd InsertEnter * :set norelativenumber number
 "autocmd InsertLeave * :set relativenumber number
 "set showmode        " Display the current mode
-set scrolloff=2     " Minimum lines to keep above and below cursorline
+set scrolloff=1     " Minimum lines to keep above and below cursorline
 
 "set wrap            " wrap long lines
-set shiftwidth=4    " indent equals 4 spaces
-set tabstop=4       " An indentation every 4 columns
+"set shiftwidth=4    " indent equals 4 spaces
+"set tabstop=4       " An indentation every 4 columns
 "set expandtab       " Tabs are spaces, not tabs
 "set softtabstop=4   " Let backspace delete indent
 set autoindent
@@ -89,6 +90,10 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 map <Space> <Leader>
 nmap <Leader><Space> :
 
+nnoremap ; :
+"nnoremap : ;
+vnoremap ; :
+"vnoremap : ;
 nnoremap ZZ :x
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
@@ -109,15 +114,14 @@ map <C-l> <C-w>l
 
 " #ctags setting
 " `ctags -R --fields=+SinKaz --c-kinds=+p --c++-kinds=+p *`
-"set tags=tags;
-"set autochdir
-"nnoremap <C-]> g<C-]>
+set tags=tags;
+nnoremap <C-]> g<C-]>
 "nnoremap <Leader><C-]> <C-w>g<C-]>
 "nnoremap <Leader><C-]> :tabnew %<CR>g<C-]>
 
 
 function MyCheckIsTheDirExists(d)
-  return isdirectory(expand("~/.vimz/plugged/" .. a:d))
+  return isdirectory(expand("~/.vimz/plugged/") . a:d)
 endfunction
 
 if MyCheckIsTheDirExists("nerdtree")
@@ -151,6 +155,7 @@ endif
 
 if MyCheckIsTheDirExists("vim-airline")
   set laststatus=2
+  let g:airline_section_y = 'sw%{&shiftwidth}/ts%{&tabstop} %{&fenc}[%{&ff}]'
   let g:airline_section_z = '%l:%c%V(%p%%/%L)'  " line:col,percentage
 endif
 
@@ -162,13 +167,29 @@ if MyCheckIsTheDirExists("vim-easymotion")
   nmap f <Plug>(easymotion-s)
 endif
 
-if MyCheckIsTheDirExists("LeaderF")
-  "let g:Lf_ShortcutF = '<C-P>'
-  "let g:Lf_WindowPosition = 'popup'
-  "let g:Lf_PreviewInPopup = 1
+if MyCheckIsTheDirExists("indentLine")
+  "let g:indentLine_enabled = 0
+  let g:indentLine_showFirstIndentLevel = 1
+  let g:indentLine_fileType = ['c', 'cpp', 'python', 'go', 'java', 'scala', 'javascript', 'cs']
 endif
 
-if MyCheckIsTheDirExists("ctrlp.vim") && 0
+if MyCheckIsTheDirExists("LeaderF")
+  "let g:Lf_ShortcutF = '<C-P>'
+  noremap <Leader>f :Leaderf 
+  " noremap <Leader>ff :LeaderfFile<CR>
+  let g:Lf_ShortcutF = "<Leader>ff"
+  " noremap <Leader>fb :LeaderfBuffer<CR>
+  let g:Lf_ShortcutB = "<Leader>fb"
+  noremap <Leader>fm :LeaderfFunction<CR>
+  noremap <Leader>fl :LeaderfLine<CR>
+  noremap <Leader>ft :LeaderfTag<CR>
+  let g:Lf_ShowDevIcons = 0
+  let g:Lf_FollowLinks = 1
+  let g:Lf_DefaultMode = "Regex"
+  "let g:Lf_Ctags = "/usr/local/universal-ctags/ctags"
+endif
+
+if 0 && MyCheckIsTheDirExists("ctrlp.vim")  " ctrlp.vim deprecated
   let g:ctrlp_map = '<c-p>'
   let g:ctrlp_cmd = 'CtrlP'
   let g:ctrlp_working_path_mode = 'ra'
@@ -178,6 +199,26 @@ if MyCheckIsTheDirExists("ctrlp.vim") && 0
   set wildignore+=*\\tmp\\*,*.swp,*.zip,*.dll,*.exe
 endif
 
+if MyCheckIsTheDirExists("far.vim")
+  set lazyredraw            " improve scrolling performance when navigating through large results
+  set ignorecase smartcase  " ignore case only when the pattern contains no capital letters
+  " shortcut for far.vim find
+  nnoremap <silent> <Leader>F  :Farf<cr>
+  vnoremap <silent> <Leader>F  :Farf<cr>
+  " shortcut for far.vim replace
+  "nnoremap <silent> <Replace-Shortcut>  :Farr<cr>
+  "vnoremap <silent> <Replace-Shortcut>  :Farr<cr>
+endif
+
 if MyCheckIsTheDirExists("vim-cpp-enhanced-highlight")
   let g:cpp_class_decl_highlight = 1
 endif
+
+if MyCheckIsTheDirExists("coc.nvim")
+  let g:coc_disable_startup_warning = 1
+endif
+
+if MyCheckIsTheDirExists("onedark.vim")
+  colorscheme onedark
+endif
+
