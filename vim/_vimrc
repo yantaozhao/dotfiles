@@ -2,47 +2,72 @@
 "
 " Install:
 "
-" 0. ~/.vimrc : "cp /etc/vim/vimrc ~/.vimrc"
-"
 " 1. download and put file `plug.vim` under "~/.vimz/autoload/":
 " see: https://github.com/junegunn/vim-plug
 " it maybe like: curl -fLo ~/.vimz/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 "
-" 2. source this file inside "~/.vimrc": i.e.: append line `source ~/.vimz/_vimrc` to "~/.vimrc"
+" 2. source this file, i.e., append line `source ~/.vimz/_vimrc` to:
+"   neovim: "~/.config/nvim/init.vim" (touch .../init.vim)
+"   vim:    "~/.vimrc" (cp /etc/vim/vimrc ~/.vimrc)
 "
 " 3. start vim, and run:
 "   :PlugInstall
 
 
+set nocompatible
 set rtp+=~/.vimz
 
 call plug#begin('~/.vimz/plugged')
-Plug 'preservim/nerdtree', { 'on': ['NERDTree', 'NERDTreeToggle'] }
+Plug 'preservim/nerdtree', {'on': ['NERDTree', 'NERDTreeToggle']}
 "Plug 'justinmk/vim-dirvish'
-Plug 'preservim/tagbar', { 'on': ['TagbarOpen', 'TagbarToggle'] }  " use ctags
+if executable('ranger')
+  Plug 'rafaqz/ranger.vim', {'on': ['RangerEdit', 'RangerVSplit', 'RangerSplit', 'RangerTab']}  " using `ranger`
+endif
+Plug 'farmergreg/vim-lastplace'
+if 1 || executable('ctags')
+  Plug 'preservim/tagbar', {'on': ['TagbarOpen', 'TagbarToggle']}  " using `ctags`
+endif
+Plug 'haya14busa/vim-asterisk'
 Plug 'google/vim-searchindex'
 Plug 'tpope/vim-sleuth'
-Plug 'luochen1990/rainbow'
+Plug 'Yggdroot/indentLine', {'for': ['c', 'cpp', 'python', 'go', 'java', 'scala', 'javascript', 'cs']}
+Plug 'miyakogi/conoline.vim'
+"Plug 'wellle/context.vim'
 "Plug 'mhinz/vim-signify'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'Raimondi/delimitMate'
+Plug 'mg979/vim-visual-multi'
 Plug 'markonm/traces.vim'
-Plug 'easymotion/vim-easymotion'
-"Plug 'mg979/vim-visual-multi'
-Plug 'Yggdroot/indentLine'
+Plug 'rhysd/clever-f.vim'
+Plug 'easymotion/vim-easymotion', {'on': '<Plug>(easymotion-s)'}
 "Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'Yggdroot/LeaderF'
-"Plug 'mhinz/vim-grepper'
-Plug 'brooth/far.vim'
-"Plug 'ludovicchabant/vim-gutentags'
-Plug 'dense-analysis/ale'
-Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
-if executable("node")
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}  " use nodejs
+if executable('rg') || executable('ag')
+  Plug 'pechorin/any-jump.vim'
+  Plug 'dyng/ctrlsf.vim'
 endif
-Plug 'neoclide/coc-snippets'
-Plug 'joshdick/onedark.vim'
+"Plug 'mhinz/vim-grepper'
+Plug 'brooth/far.vim', {'on': ['F', 'Far', 'Fardo', 'Farf', 'Farr']}
+"Plug 'dense-analysis/ale'
+Plug 'octol/vim-cpp-enhanced-highlight', {'for': 'cpp'}
+Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins', 'for': 'python'}
+"Plug 'google/vim-maktaba'
+"Plug 'google/vim-codefmt'
+Plug 'honza/vim-snippets'
+if executable("node")
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}  " using nodejs `node`
+endif
+Plug 'luochen1990/rainbow'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ojroques/vim-scrollstatus'
+Plug 'sheerun/vim-polyglot'  " used by other colorscheme(s)
+Plug 'sainnhe/edge'
+Plug 'sainnhe/sonokai'
+"Plug 'sickill/vim-monokai'
+"Plug 'rakr/vim-one'
+"Plug 'NLKNguyen/papercolor-theme'
+Plug 'RRethy/vim-illuminate'
 call plug#end()
 "
 
@@ -57,7 +82,7 @@ set showmatch           " Show matching brackets.
 set ignorecase          " Do case insensitive matching
 set smartcase           " Do smart case matching
 set incsearch           " Incremental search
-"set mouse=a            " Enable mouse usage (all modes)
+set mouse=a            " Enable mouse usage (all modes)
 set hls
 set nu
 "set relativenumber number
@@ -76,19 +101,19 @@ set cindent
 "set backspace=indent,eol,start  " Backspace for dummies
 
 "set title
+set hidden
 "set confirm
 "set nobackup    " backup~ file
 "set noundofile  " .un~ file
-
 set updatetime=400
 
 " Uncomment the following to have Vim jump to the last position when reopening a file
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+"au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
 " mapleader \
 map <Space> <Leader>
-nmap <Leader><Space> :
+"nmap <Leader><Space> :
 
 nnoremap ; :
 "nnoremap : ;
@@ -100,8 +125,8 @@ nnoremap <C-y> 3<C-y>
 
 " search selected strings in visual mode,default except backslash,see :help magic
 " yank and search very nomagic {
-vnoremap <Leader>* y/\V<C-r>"
-vnoremap <Leader># y?\V<C-r>"
+"vnoremap <Leader>* y/\V<C-r>"
+"vnoremap <Leader># y?\V<C-r>"
 " }
 vnoremap <C-c> "+y
 inoremap <C-v> <ESC>"+pa
@@ -120,11 +145,11 @@ nnoremap <C-]> g<C-]>
 "nnoremap <Leader><C-]> :tabnew %<CR>g<C-]>
 
 
-function MyCheckIsTheDirExists(d)
+function! s:MyIsTheDirExists(d)
   return isdirectory(expand("~/.vimz/plugged/") . a:d)
 endfunction
 
-if MyCheckIsTheDirExists("nerdtree")
+if s:MyIsTheDirExists("nerdtree")
   nmap <Leader>tn :NERDTreeToggle<CR>
   " Exit Vim if NERDTree is the only window left.
   autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
@@ -136,44 +161,60 @@ if MyCheckIsTheDirExists("nerdtree")
   let NERDTreeShowHidden = 1
 endif
 
-if MyCheckIsTheDirExists("tagbar")
+if s:MyIsTheDirExists("ranger.vim")
+  map <leader>rr :RangerEdit<cr>
+  map <leader>rv :RangerVSplit<cr>
+  map <leader>rs :RangerSplit<cr>
+  map <leader>rt :RangerTab<cr>
+  map <leader>ri :RangerInsert<cr>
+  map <leader>ra :RangerAppend<cr>
+  map <leader>rc :set operatorfunc=RangerChangeOperator<cr>g@
+  map <leader>rd :RangerCD<cr>
+  map <leader>rld :RangerLCD<cr>
+endif
+
+if s:MyIsTheDirExists('vim-lastplace')
+  let g:lastplace_open_folds = 0
+endif
+
+if s:MyIsTheDirExists("tagbar")
   nmap <Leader>tt :TagbarToggle<CR>
   "let g:tagbar_ctags_bin = 'C:\Ctags\ctags.exe'
   let g:tagbar_sort = 0  " sort according to order
   let g:tagbar_indent = 3
   let g:tagbar_show_linenumbers = 1  " Show absolute line numbers
+  "let g:tagbar_autofocus = 1 " focus Tagbar window when opened
   "let g:tagbar_left = 1  " default right-hand side
-  let g:tagbar_autofocus = 1 " focus Tagbar window when opened
   if 0 || executable("ctags")
     autocmd FileType c,cpp nested :TagbarOpen
   endif
 endif
 
-if MyCheckIsTheDirExists("rainbow")
-  let g:rainbow_active = 1  "set to 0 if you want to enable it later via :RainbowToggle
+if s:MyIsTheDirExists("vim-asterisk")
+  map *  <Plug>(asterisk-z*)
+  map #  <Plug>(asterisk-z#)
+  map g* <Plug>(asterisk-gz*)
+  map g# <Plug>(asterisk-gz#)
 endif
 
-if MyCheckIsTheDirExists("vim-airline")
-  set laststatus=2
-  let g:airline_section_y = 'sw%{&shiftwidth}/ts%{&tabstop} %{&fenc}[%{&ff}]'
-  let g:airline_section_z = '%l:%c%V(%p%%/%L)'  " line:col,percentage
-endif
-
-if MyCheckIsTheDirExists("vim-airline-themes")
-  let g:airline_theme='tomorrow'
-endif
-
-if MyCheckIsTheDirExists("vim-easymotion")
-  nmap f <Plug>(easymotion-s)
-endif
-
-if MyCheckIsTheDirExists("indentLine")
+if s:MyIsTheDirExists("indentLine")
   "let g:indentLine_enabled = 0
   let g:indentLine_showFirstIndentLevel = 1
-  let g:indentLine_fileType = ['c', 'cpp', 'python', 'go', 'java', 'scala', 'javascript', 'cs']
+  "let g:indentLine_fileType = ['c', 'cpp', 'python', 'go', 'java', 'scala', 'javascript', 'cs']
 endif
 
-if MyCheckIsTheDirExists("LeaderF")
+if s:MyIsTheDirExists("vim-easymotion")
+  let g:EasyMotion_do_mapping = 0
+  nmap <Leader>g <Plug>(easymotion-s)
+endif
+
+if s:MyIsTheDirExists("vim-visual-multi")
+  let g:VM_maps = {}
+  let g:VM_maps['Find Under']         = '<C-d>'
+  let g:VM_maps['Find Subword Under'] = '<C-d>'
+endif
+
+if s:MyIsTheDirExists("LeaderF")
   "let g:Lf_ShortcutF = '<C-P>'
   noremap <Leader>f :Leaderf 
   " noremap <Leader>ff :LeaderfFile<CR>
@@ -189,36 +230,98 @@ if MyCheckIsTheDirExists("LeaderF")
   "let g:Lf_Ctags = "/usr/local/universal-ctags/ctags"
 endif
 
-if 0 && MyCheckIsTheDirExists("ctrlp.vim")  " ctrlp.vim deprecated
-  let g:ctrlp_map = '<c-p>'
-  let g:ctrlp_cmd = 'CtrlP'
-  let g:ctrlp_working_path_mode = 'ra'
-  let g:ctrlp_use_caching = 0
-  let g:ctrlp_clear_cache_on_exit = 1
-  set wildignore+=*/tmp/*,*.so,*.a,*.o,*.swp,*.zip
-  set wildignore+=*\\tmp\\*,*.swp,*.zip,*.dll,*.exe
-endif
-
-if MyCheckIsTheDirExists("far.vim")
-  set lazyredraw            " improve scrolling performance when navigating through large results
-  set ignorecase smartcase  " ignore case only when the pattern contains no capital letters
+if s:MyIsTheDirExists("far.vim")
+  "set lazyredraw            " improve scrolling performance when navigating through large results
   " shortcut for far.vim find
-  nnoremap <silent> <Leader>F  :Farf<cr>
-  vnoremap <silent> <Leader>F  :Farf<cr>
+  nnoremap <silent> <Leader>F  :F <C-r><C-w> %<cr>
+  vnoremap <silent> <Leader>F  :F <C-r><C-w> %<cr>
   " shortcut for far.vim replace
   "nnoremap <silent> <Replace-Shortcut>  :Farr<cr>
   "vnoremap <silent> <Replace-Shortcut>  :Farr<cr>
 endif
 
-if MyCheckIsTheDirExists("vim-cpp-enhanced-highlight")
+if s:MyIsTheDirExists("vim-cpp-enhanced-highlight")
   let g:cpp_class_decl_highlight = 1
 endif
 
-if MyCheckIsTheDirExists("coc.nvim")
+if s:MyIsTheDirExists("coc.nvim")
+  " Use tab for trigger completion with characters ahead and navigate.
+  inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+
+  " Make <CR> auto-select the first completion item and notify coc.nvim to
+  " format on enter, <cr> could be remapped by other vim plugin
+  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+  " GoTo code navigation.
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+
+  " Highlight the symbol and its references when holding the cursor.
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+
   let g:coc_disable_startup_warning = 1
+  "let g:coc_global_extensions = ['coc-marketplace', 'coc-snippets', 'coc-vimlsp', 'coc-json', 'coc-pyright', 'coc-cmake']
+  let g:coc_global_extensions = ['coc-marketplace', 'coc-snippets', 'coc-vimlsp', 'coc-json', 'coc-cmake']
 endif
 
-if MyCheckIsTheDirExists("onedark.vim")
+if s:MyIsTheDirExists("rainbow")
+  let g:rainbow_active = 1  "set to 0 if you want to enable it later via :RainbowToggle
+endif
+
+if s:MyIsTheDirExists("vim-airline")
+  set laststatus=2
+  let g:airline_section_y = 'sw%{&shiftwidth}/ts%{&tabstop} %{&fenc}[%{&ff}]'
+  if s:MyIsTheDirExists('vim-scrollstatus')
+    let g:scrollstatus_symbol_track = '='
+    let g:scrollstatus_symbol_bar = '|'
+    let g:airline_section_z = '%l:%c%V(%p%%*%L) %{ScrollStatus()}'  " line:col,percentage
+  else
+    let g:airline_section_z = '%l:%c%V(%p%%*%L)'  " line:col,percentage
+  endif
+  let g:airline#extensions#tabline#enabled = 1
+endif
+
+if s:MyIsTheDirExists("vim-airline-themes")
+  let g:airline_theme='tomorrow'
+endif
+
+if has('termguicolors')
+  set termguicolors
+endif
+if s:MyIsTheDirExists("edge")
+  "let g:edge_enable_italic = 1
+  colorscheme edge
+elseif s:MyIsTheDirExists("sonokai")
+  "let g:sonokai_enable_italic = 1
+  colorscheme sonokai
+elseif s:MyIsTheDirExists("vim-one")
+  set background=dark
+  let g:one_allow_italics = 1
+  colorscheme one
+elseif s:MyIsTheDirExists("vim-monokai")
+  colorscheme monokai
+elseif s:MyIsTheDirExists("onedark.vim")
   colorscheme onedark
 endif
 
+if s:MyIsTheDirExists('vim-illuminate')
+  let g:Illuminate_delay = 100
+  "hi illuminatedWord cterm=undercurl gui=undercurl
+elseif s:MyIsTheDirExists('vim_current_word')
+  let g:vim_current_word#highlight_current_word = 0
+  let g:vim_current_word#highlight_delay = 50
+  " set cterm after colorscheme loaded
+  hi CurrentWordTwins cterm=standout gui=standout
+endif
