@@ -29,6 +29,8 @@ if 1 || executable('ctags')
 endif
 Plug 'haya14busa/vim-asterisk'
 Plug 'google/vim-searchindex'
+Plug 't9md/vim-quickhl'
+Plug 'MattesGroeger/vim-bookmarks'
 Plug 'tpope/vim-sleuth'
 Plug 'Yggdroot/indentLine', {'for': ['c', 'cpp', 'python', 'go', 'java', 'scala', 'javascript', 'cs']}
 Plug 'miyakogi/conoline.vim'
@@ -39,13 +41,11 @@ Plug 'mg979/vim-visual-multi'
 Plug 'markonm/traces.vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'easymotion/vim-easymotion', {'on': '<Plug>(easymotion-s)'}
-"Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'Yggdroot/LeaderF'
-if executable('rg') || executable('ag')
-  Plug 'pechorin/any-jump.vim'
-  Plug 'dyng/ctrlsf.vim'
-endif
-"Plug 'mhinz/vim-grepper'
+"if executable('rg') || executable('ag')
+"  Plug 'pechorin/any-jump.vim'
+"  Plug 'dyng/ctrlsf.vim'
+"endif
 Plug 'brooth/far.vim', {'on': ['F', 'Far', 'Fardo', 'Farf', 'Farr']}
 "Plug 'dense-analysis/ale'
 Plug 'octol/vim-cpp-enhanced-highlight', {'for': 'cpp'}
@@ -197,6 +197,26 @@ if s:MyIsTheDirExists("vim-asterisk")
   map g# <Plug>(asterisk-gz#)
 endif
 
+if s:MyIsTheDirExists("vim-quickhl")
+  nmap <Leader>hm <Plug>(quickhl-manual-this)
+  xmap <Leader>hm <Plug>(quickhl-manual-this)
+  nmap <Leader>hh <Plug>(quickhl-manual-this-whole-word)
+  xmap <Leader>hh <Plug>(quickhl-manual-this-whole-word)
+  nmap <Leader>hH <Plug>(quickhl-manual-reset)
+  xmap <Leader>hH <Plug>(quickhl-manual-reset)
+endif
+
+if s:MyIsTheDirExists("vim-bookmarks")
+  let g:bookmark_no_default_key_mappings = 1
+  let g:bookmark_auto_save = 0
+  nmap <Leader>mm <Plug>BookmarkToggle
+  nmap <Leader>ma <Plug>BookmarkShowAll
+  nmap <Leader>mj <Plug>BookmarkNext
+  nmap <Leader>mk <Plug>BookmarkPrev
+  nmap <Leader>mc <Plug>BookmarkClear
+  nmap <Leader>mx <Plug>BookmarkClearAll
+endif
+
 if s:MyIsTheDirExists("indentLine")
   "let g:indentLine_enabled = 0
   let g:indentLine_showFirstIndentLevel = 1
@@ -221,12 +241,13 @@ if s:MyIsTheDirExists("LeaderF")
   let g:Lf_ShortcutF = "<Leader>ff"
   " noremap <Leader>fb :LeaderfBuffer<CR>
   let g:Lf_ShortcutB = "<Leader>fb"
-  noremap <Leader>fm :LeaderfFunction<CR>
+  noremap <Leader>fn :LeaderfFunction<CR>
   noremap <Leader>fl :LeaderfLine<CR>
   noremap <Leader>ft :LeaderfTag<CR>
   let g:Lf_ShowDevIcons = 0
   let g:Lf_FollowLinks = 1
   let g:Lf_DefaultMode = "Regex"
+  "let g:Lf_PreviewResult = {'Function': 0}
   "let g:Lf_Ctags = "/usr/local/universal-ctags/ctags"
 endif
 
@@ -272,8 +293,7 @@ if s:MyIsTheDirExists("coc.nvim")
   autocmd CursorHold * silent call CocActionAsync('highlight')
 
   let g:coc_disable_startup_warning = 1
-  "let g:coc_global_extensions = ['coc-marketplace', 'coc-snippets', 'coc-vimlsp', 'coc-json', 'coc-pyright', 'coc-cmake']
-  let g:coc_global_extensions = ['coc-marketplace', 'coc-snippets', 'coc-vimlsp', 'coc-json', 'coc-cmake']
+  let g:coc_global_extensions = ['coc-marketplace', 'coc-snippets', 'coc-vimlsp', 'coc-json', 'coc-cmake', 'coc-tabnine']
 endif
 
 if s:MyIsTheDirExists("rainbow")
