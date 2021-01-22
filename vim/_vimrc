@@ -17,6 +17,7 @@
 set nocompatible
 set rtp+=~/.vimz
 
+let g:plug_threads = 8
 call plug#begin('~/.vimz/plugged')
 Plug 'preservim/nerdtree', {'on': ['NERDTree', 'NERDTreeToggle']}
 "Plug 'justinmk/vim-dirvish'
@@ -33,7 +34,6 @@ Plug 't9md/vim-quickhl'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'tpope/vim-sleuth'
 Plug 'Yggdroot/indentLine', {'for': ['c', 'cpp', 'python', 'go', 'java', 'scala', 'javascript', 'cs']}
-Plug 'miyakogi/conoline.vim'
 "Plug 'wellle/context.vim'
 "Plug 'mhinz/vim-signify'
 Plug 'Raimondi/delimitMate'
@@ -67,6 +67,7 @@ Plug 'sainnhe/sonokai'
 "Plug 'sickill/vim-monokai'
 "Plug 'rakr/vim-one'
 "Plug 'NLKNguyen/papercolor-theme'
+Plug 'miyakogi/conoline.vim'
 Plug 'RRethy/vim-illuminate'
 call plug#end()
 "
@@ -320,6 +321,7 @@ endif
 if has('termguicolors')
   set termguicolors
 endif
+set background=dark
 if s:MyIsTheDirExists("edge")
   "let g:edge_enable_italic = 1
   colorscheme edge
@@ -327,7 +329,7 @@ elseif s:MyIsTheDirExists("sonokai")
   "let g:sonokai_enable_italic = 1
   colorscheme sonokai
 elseif s:MyIsTheDirExists("vim-one")
-  set background=dark
+  "set background=dark
   let g:one_allow_italics = 1
   colorscheme one
 elseif s:MyIsTheDirExists("vim-monokai")
