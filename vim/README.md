@@ -2,7 +2,7 @@
 
 
 ## Description
-For [neovim](https://neovim.io) (recommended), or vim.
+For vim (vim-nox recommended), or [neovim](https://neovim.io).
 - single configuration file: `_vimrc`
 
 
@@ -18,5 +18,10 @@ For [neovim](https://neovim.io) (recommended), or vim.
 From (n)vim, `source` this rcfile, and install plugins using vim plugin manager [`vim-plug`](https://github.com/junegunn/vim-plug)
 
 ### On Linux, \*nix, etc:
-See comments inside the rcfile
+
+```shell
+mkdir ~/.vimz && git clone --depth 1 https://github.com/junegunn/vim-plug ~/.vimz/autoload && cp -v _vimrc ~/.vimz/ && echo 'source ~/.vimz/_vimrc' >> ~/.vimrc
+```
+
+See comments inside the rcfile.
 

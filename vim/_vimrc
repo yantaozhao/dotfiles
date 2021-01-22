@@ -7,8 +7,8 @@
 " it maybe like: curl -fLo ~/.vimz/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 "
 " 2. source this file, i.e., append line `source ~/.vimz/_vimrc` to:
-"   neovim: "~/.config/nvim/init.vim" (touch .../init.vim)
 "   vim:    "~/.vimrc" (cp /etc/vim/vimrc ~/.vimrc)
+"   neovim: "~/.config/nvim/init.vim" (touch .../init.vim)
 "
 " 3. start vim, and run:
 "   :PlugInstall
