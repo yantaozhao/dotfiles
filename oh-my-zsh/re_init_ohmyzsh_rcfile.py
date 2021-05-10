@@ -12,17 +12,18 @@ from io import StringIO
 # the plugins order matters:
 g_use_ohmyzsh_builtin_plugins = [
     'colored-man-pages',
+    'zsh-navigation-tools',
     # 'docker',
 ]
 g_use_third_party_custom_plugins = [
-    f'https://github.com/zsh-users/zsh-autosuggestions.git',
-    # f'https://github.com/zsh-users/zsh-syntax-highlighting.git',
-    f'https://github.com/zdharma/fast-syntax-highlighting.git',
-    f'https://github.com/zsh-users/zsh-history-substring-search.git',
-    f'https://github.com/zsh-users/zsh-completions.git',
+    r'https://github.com/zsh-users/zsh-autosuggestions.git',
+    # r'https://github.com/zsh-users/zsh-syntax-highlighting.git',
+    r'https://github.com/zdharma/fast-syntax-highlighting.git',
+    # r'https://github.com/zsh-users/zsh-history-substring-search.git',
+    # r'https://github.com/zsh-users/zsh-completions.git',
 ]
 # one of ohmyzsh builtin theme. set `None` to use the default theme
-g_use_theme = 'fishy'  # 'af-magic'
+g_use_theme = 'simple' # 'fishy', 'af-magic'
 # extended config will be append to .zshrc
 g_use_extended_cfg = '''
 # unalias oh-my-zsh's alias
@@ -34,6 +35,7 @@ unalias md rd
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    unalias ls
     alias ls='ls --color=auto'
 fi
 # some more ls aliases
@@ -166,9 +168,12 @@ def git_clone_or_pull(url_list):
         plugin_dir = _repo_dir_from_git_url(url)
         if os.path.exists(plugin_dir):
             print(f'updating {url}')
-            _run_cmd(f'cd {plugin_dir} && git pull')
+            try:
+                _run_cmd(f'cd {plugin_dir} && git pull --verbose')
+            except:
+                print(f'Warning: unable to update {url}')
         else:
-            _run_cmd(f'git clone --depth 1 {url}')
+            _run_cmd(f'git clone --depth 1 --verbose {url}')
             print(f'{plugin_dir} cloned.')
     os.chdir(oldpwd)
 
