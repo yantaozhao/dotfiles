@@ -2,7 +2,7 @@
 
 ## Dependency
 
-已经安装 [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh), 默认在`~/.oh-my-zsh`目录。
+已经安装 [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh), 默认是在`~/.oh-my-zsh`目录。
 
 
 ## 调整方法：
@@ -14,7 +14,7 @@
 ```shell
 cd ~/.oh-my-zsh/custom/plugins
 git clone https://github.com/zsh-users/zsh-autosuggestions.git
-git clone https://github.com/zdharma/fast-syntax-highlighting.git
+git clone https://github.com/zdharma/fast-syntax-highlighting.git  (语法高亮可有可无)
 ```
 
 然后修改`~/.zshrc`插件部分：
