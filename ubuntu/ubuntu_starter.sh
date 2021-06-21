@@ -33,7 +33,7 @@ esac
 
 echo "(apt mirror is recommended for speedup the installation!)"
 ui=""
-read -p "Use tuna-tsinghua as apt mirror'? [y/N]" ui
+read -p "Change apt mirror to tuna-tsinghua? [y/N]" ui
 # https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/
 if [ "${ui}" = "y" ]; then
     $SUDO cp -aiv /etc/apt/sources.list /etc/apt/sources.list.orig
@@ -66,6 +66,11 @@ fi
 ######
 set -x
 
+### ubuntu docker ###
+if [ "${mode}" -eq "1" ]; then
+    $SUDO unminimize || true
+fi
+
 ### common ###
 $SUDO $APT install -y wget
 $SUDO $APT install -y build-essential binutils
@@ -76,7 +81,6 @@ $SUDO $APT install -y zsh
 $SUDO $APT install -y software-properties-common
 $SUDO $APT install -y lsb-release
 $SUDO $APT install -y bc
-# $SUDO $APT install -y unar
 
 if (($(echo "$(lsb_release -rs) >= 19.04" | bc -l))); then
     $SUDO $APT install -y ripgrep
@@ -85,6 +89,8 @@ fi
 
 ### ubuntu desktop ###
 if [ "${mode}" -eq "0" ]; then
+    $SUDO $APT install -y unar
+
     ui=""
     read -p "Install packages using snap? [y/N]" ui
     if [ "${ui}" = "y" ]; then
@@ -93,14 +99,15 @@ if [ "${mode}" -eq "0" ]; then
         $SUDO snap install node --classic
         npm config set registry https://registry.npm.taobao.org
         npm config set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/
-        $SUDO snap install chromium
+        # $SUDO snap install chromium
         $SUDO snap install xmind
     fi
 fi
 
 ### ubuntu docker ###
 if [ "${mode}" -eq "1" ]; then
-    $SUDO unminimize || true
+    # $SUDO unminimize || true
+    $SUDO $APT install -y gdb
 
     ## TODO: en_US.UTF-8
     $SUDO $APT install -y language-pack-en-base
