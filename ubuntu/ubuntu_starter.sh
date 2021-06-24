@@ -73,7 +73,7 @@ fi
 
 ### common ###
 $SUDO $APT install -y wget
-$SUDO $APT install -y build-essential binutils
+$SUDO $APT install -y build-essential binutils gdb
 $SUDO $APT install -y autoconf automake libtool
 $SUDO $APT install -y vim tree git
 $SUDO $APT install -y openssh-client
@@ -106,25 +106,31 @@ fi
 
 ### ubuntu docker ###
 if [ "${mode}" -eq "1" ]; then
-    # $SUDO unminimize || true
-    $SUDO $APT install -y gdb
-
     ## TODO: en_US.UTF-8
     $SUDO $APT install -y language-pack-en-base
     # $SUDO locale-gen
     # $SUDO update-locale LANG=en_US.UTF-8
 
+    # node
+    wget https://deb.nodesource.com/setup_lts.x -O node_setup_lts.x
+    if [ "${me}" != "root" ]; then
+        $SUDO -E bash node_setup_lts.x
+    else
+        bash node_setup_lts.x
+    fi
+    $SUDO $APT -y update
+    $SUDO $APT install -y nodejs
+
     # ssh server
     echo "Please set passwd before using ssh login:"
     if [ -z "$(echo $(passwd --status) | grep -F ' P ')" ]; then
-        $SUDO passwd root
+        $SUDO passwd
     fi
     $SUDO $APT install -y openssh-server
     $SUDO sed -i 's/#*PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
     $SUDO sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd
 
-    echo "ip:"
-    hostname -I
+    echo "ip: $(hostname -I)"
     service ssh status || true
 
     OMZ_INSTALLER_OPTION="--unattended"
