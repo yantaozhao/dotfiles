@@ -1,6 +1,7 @@
 #! /bin/bash
 
 set -e
+echo "starter configuration for a new ubuntu environment"
 ######
 
 me=$(whoami)
