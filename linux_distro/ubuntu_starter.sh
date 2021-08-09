@@ -4,6 +4,9 @@ set -e
 echo "starter configuration for a new ubuntu environment"
 ######
 
+yn=$1
+echo "yn :${yn}:"
+
 me=$(whoami)
 SUDO=""
 APT=apt
@@ -12,12 +15,33 @@ if [ "${me}" != "root" ]; then
     SUDO=sudo
 fi
 
+if [ $(command -v lsb_release) ]; then
+    ubuntu_codename=$(lsb_release -cs)
+else
+    ubuntu_codeinfo=$(grep -Fi "UBUNTU_CODENAME" /etc/os-release)
+    ubuntu_codename=${ubuntu_codeinfo##UBUNTU_CODENAME=}
+fi
+echo "ubuntu codename: ${ubuntu_codename}"
+
+function ask() {
+    i=$1
+    printf "input: %s? " $i >&2
+    if [ -z "${yn}" ]; then
+        read iu
+        if [ -n "${iu}" ]; then
+            i=$iu
+        fi
+    fi
+    printf "\n" >&2
+
+    echo ${i,,}
+}
+
 echo "Choose your environment:"
 echo " ubuntu desktop: 0*"
 echo " ubuntu docker : 1"
-ui=""
-read ui
-case "${ui}" in
+read -p "input 0? " i
+case "${i}" in
 0)
     mode=0
     echo "You chose ubuntu desktop"
@@ -32,20 +56,10 @@ case "${ui}" in
     ;;
 esac
 
-echo "(apt mirror is recommended for speedup the installation!)"
-ui=""
-read -p "Change apt mirror to tuna-tsinghua? [y/N]" ui
+echo "Change apt mirror to tuna-tsinghua? [y/N]"
 # https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/
-if [ "${ui}" = "y" ]; then
+if [ "$(ask 'n')" = "y" ]; then
     $SUDO cp -aiv /etc/apt/sources.list /etc/apt/sources.list.orig
-    if [ $(command -v lsb_release) ]; then
-        ubuntu_codename=$(lsb_release -cs)
-    else
-        ubuntu_codeinfo=$(grep -Fi "UBUNTU_CODENAME" /etc/os-release)
-        ubuntu_codename=${ubuntu_codeinfo##UBUNTU_CODENAME=}
-    fi
-    echo "ubuntu codename: ${ubuntu_codename}"
-
     cat <<EOF | $SUDO tee /etc/apt/sources.list
     deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename} main restricted universe multiverse
     # deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename} main restricted universe multiverse
@@ -58,14 +72,13 @@ if [ "${ui}" = "y" ]; then
 EOF
 fi
 
-ui=""
-read -p "Run: '$SUDO $APT update'? [y/N]" ui
-if [ "${ui}" = "y" ]; then
+echo "Run: '$SUDO $APT update'? [Y/n]"
+if [ "$(ask 'y')" = "y" ]; then
     $SUDO $APT -y update
 fi
 
 ######
-set -x
+# set -x
 
 ### ubuntu docker ###
 if [ "${mode}" -eq "1" ]; then
@@ -92,16 +105,23 @@ fi
 if [ "${mode}" -eq "0" ]; then
     $SUDO $APT install -y unar
 
-    ui=""
-    read -p "Install packages using snap? [y/N]" ui
-    if [ "${ui}" = "y" ]; then
+    echo "Install packages using snap? [y/N]"
+    if [ "$(ask ${yn})" = "y" ]; then
         $SUDO snap install sublime-text --classic
         $SUDO snap install code --classic
         $SUDO snap install node --classic
         npm config set registry https://registry.npm.taobao.org
         npm config set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/
         # $SUDO snap install chromium
-        $SUDO snap install xmind
+        # $SUDO snap install xmind
+    fi
+
+    echo "Install wine apt source? [y/N]"
+    if [ "$(ask ${yn})" = "y" ]; then
+        $SUDO dpkg --add-architecture i386
+        wget -qO- https://dl.winehq.org/wine-builds/winehq.key | $SUDO apt-key add -
+        $SUDO add-apt-repository "deb https://dl.winehq.org/wine-builds/ubuntu/ ${ubuntu_codename} main"
+        # sudo apt install --install-recommends winehq-{stable,devel}
     fi
 fi
 
@@ -137,11 +157,57 @@ if [ "${mode}" -eq "1" ]; then
     OMZ_INSTALLER_OPTION="--unattended"
 fi
 
-### install: ohmyzsh ###
-ui=""
-read -p "install ohmyzsh? [y/N]" ui
+### common extra ###
+# echo "Tweak .bashrc?"
+# if [ "$(ask ${yn})" = "y" ]; then
+#     if [ -z "$(cat ~/.bashrc | grep -Fi 'history-search-')" ]; then
+#         cp -aiv ~/.bashrc ~/.bashrc.orig
+#         tee -a ~/.bashrc <<EOF
+#         # Up/Down key get matching history on inputing
+#         if [[ $- == *i* ]]; then
+#           bind '"\e[A": history-search-backward'
+#           bind '"\e[B": history-search-forward'
+#         fi
+
+#         # Tab completion case insensitive
+#         bind 'set completion-ignore-case on'
+
+#         # Colored manpage:
+#         # colors are from ohmyzsh https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colored-man-pages
+#         man() {
+#           LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+#           LESS_TERMCAP_md=$(printf "\e[1;31m") \
+#           LESS_TERMCAP_me=$(printf "\e[0m") \
+#           LESS_TERMCAP_se=$(printf "\e[0m") \
+#           LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+#           LESS_TERMCAP_ue=$(printf "\e[0m") \
+#           LESS_TERMCAP_us=$(printf "\e[1;32m") \
+#           command man "$@"
+#         }
+#         export -f man
+# EOF
+#     else
+#         echo ".bashrc already tweaked!"
+#     fi
+# fi
+
+echo "Install Miniconda? [y/N]"
+if [ "$(ask ${yn})" = "y" ]; then
+    wget -nc https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh && sh Miniconda3-latest-Linux-x86_64.sh
+fi
+
+echo "Install llvm apt source? [y/N]"
+if [ "$(ask ${yn})" = "y" ]; then
+    cat <<EOF | $SUDO tee /etc/apt/sources.list.d/llvm_latest.list
+        deb http://apt.llvm.org/${ubuntu_codename}/ llvm-toolchain-${ubuntu_codename} main
+        deb-src http://apt.llvm.org/${ubuntu_codename}/ llvm-toolchain-${ubuntu_codename} main
+EOF
+    wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | $SUDO apt-key add -
+fi
+
+echo "Install ohmyzsh? [y/N]"
 # https://github.com/ohmyzsh/ohmyzsh
-if [ "${ui}" = "y" ]; then
+if [ "$(ask ${yn})" = "y" ]; then
     OMZDIR=${HOME}/.oh-my-zsh
     if [ ! -d "${OMZDIR}" ]; then
         pushd .
