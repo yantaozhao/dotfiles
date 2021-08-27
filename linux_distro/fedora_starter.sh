@@ -62,6 +62,11 @@ patch:
   menu/page_size: 9
 EOF
 
+    # snap
+    $SUDO dnf install snapd
+    $SUDO ln -s /var/lib/snapd/snap /snap
+
+    ## other packages
     # vscode
     $SUDO rpm --import https://packages.microsoft.com/keys/microsoft.asc
     $SUDO sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
@@ -74,8 +79,8 @@ EOF
     # $SUDO dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/${fedora_version}/winehq.repo
 
     dnf check-update
-    $SUDO dnf install code
-    # $SUDO dnf install sublime-merge
+    $SUDO dnf -y install code
+    # $SUDO dnf -y install sublime-merge
     # $SUDO dnf install winehq-{stable,devel}
 fi
 
