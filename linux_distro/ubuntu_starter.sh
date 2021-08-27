@@ -7,10 +7,10 @@ echo "starter configuration for a new ubuntu environment"
 yn=$1
 echo "yn :${yn}:"
 
+mode=0
 me=$(whoami)
 SUDO=""
 APT=apt
-mode=0
 if [ "${me}" != "root" ]; then
     SUDO=sudo
 fi
@@ -18,8 +18,9 @@ fi
 if [ $(command -v lsb_release) ]; then
     ubuntu_codename=$(lsb_release -cs)
 else
-    ubuntu_codeinfo=$(grep -Fi "UBUNTU_CODENAME" /etc/os-release)
-    ubuntu_codename=${ubuntu_codeinfo##UBUNTU_CODENAME=}
+    # ubuntu_codeinfo=$(grep -Fi "UBUNTU_CODENAME" /etc/os-release)
+    # ubuntu_codename=${ubuntu_codeinfo##UBUNTU_CODENAME=}
+    ubuntu_codename=$(grep -E '^UBUNTU_CODENAME=' /etc/os-release | grep -Eo '[a-z]+')
 fi
 echo "ubuntu codename: ${ubuntu_codename}"
 
@@ -105,15 +106,19 @@ fi
 if [ "${mode}" -eq "0" ]; then
     $SUDO $APT install -y unar
 
+    # vscode
+    # $SUDO snap install code --classic
+    wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode_amd64.deb
+    $SUDO apt install vscode_amd64.deb
+
     echo "Install packages using snap? [y/N]"
     if [ "$(ask ${yn})" = "y" ]; then
         $SUDO snap install sublime-text --classic
-        $SUDO snap install code --classic
+        $SUDO snap install sublime-merge --classic
         $SUDO snap install node --classic
         npm config set registry https://registry.npm.taobao.org
         npm config set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/
         # $SUDO snap install chromium
-        # $SUDO snap install xmind
     fi
 
     echo "Install wine apt source? [y/N]"
