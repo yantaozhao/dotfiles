@@ -105,11 +105,23 @@ fi
 ### ubuntu desktop ###
 if [ "${mode}" -eq "0" ]; then
     $SUDO $APT install -y unar
+    
+    # rime input
+    $SUDO $APT -y install ibus-rime librime-data-double-pinyin
+    mkdir -p ${HOME}/.config/ibus/rime/ || true
+    cat << EOF | tee ${HOME}/.config/ibus/rime/default.custom.yaml
+patch:
+  schema_list:
+    # - schema: luna_pinyin          # 朙月拼音
+    - schema: double_pinyin        # 自然碼雙拼
+
+  menu/page_size: 9
+EOF
 
     # vscode
     # $SUDO snap install code --classic
     wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode_amd64.deb
-    $SUDO apt install vscode_amd64.deb
+    $SUDO $APT install vscode_amd64.deb
 
     echo "Install packages using snap? [y/N]"
     if [ "$(ask ${yn})" = "y" ]; then
