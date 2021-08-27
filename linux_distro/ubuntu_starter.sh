@@ -77,6 +77,7 @@ echo "Run: '$SUDO $APT update'? [Y/n]"
 if [ "$(ask 'y')" = "y" ]; then
     $SUDO $APT -y update
 fi
+# $SUDO $APT upgrade
 
 ######
 # set -x
@@ -92,14 +93,12 @@ $SUDO $APT install -y build-essential binutils gdb
 $SUDO $APT install -y autoconf automake libtool
 $SUDO $APT install -y vim tree git
 $SUDO $APT install -y openssh-client
-$SUDO $APT install -y zsh
 $SUDO $APT install -y software-properties-common
 $SUDO $APT install -y lsb-release
 $SUDO $APT install -y bc
 
 if (($(echo "$(lsb_release -rs) >= 19.04" | bc -l))); then
-    # $SUDO $APT install -y ripgrep
-    # $SUDO $APT install -y fd-find
+    # $SUDO $APT install -y ripgrep fd-find
 fi
 
 ### ubuntu desktop ###
@@ -225,6 +224,8 @@ fi
 echo "Install ohmyzsh? [y/N]"
 # https://github.com/ohmyzsh/ohmyzsh
 if [ "$(ask ${yn})" = "y" ]; then
+    $SUDO $APT install -y zsh
+
     OMZDIR=${HOME}/.oh-my-zsh
     if [ ! -d "${OMZDIR}" ]; then
         pushd .
@@ -242,3 +243,5 @@ if [ "$(ask ${yn})" = "y" ]; then
         echo "${OMZDIR} already exists!"
     fi
 fi
+
+echo 'DONE'

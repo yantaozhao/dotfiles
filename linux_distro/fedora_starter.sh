@@ -41,9 +41,7 @@ esac
 # fi
 
 $SUDO dnf -y check-update || true
-$SUDO dnf -y distro-sync
-read -p "distro upgraded. Press any key to continue"
-
+# $SUDO dnf -y distro-sync
 $SUDO dnf -y group install "Minimal Install"
 $SUDO dnf -y group install "C Development Tools and Libraries"
 $SUDO dnf -y install wget vim tree git
@@ -90,3 +88,5 @@ if [ "${mode}" -eq "1" ]; then
     # passwd
     # sshd -D
 fi
+
+echo 'DONE'
