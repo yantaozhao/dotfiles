@@ -98,8 +98,8 @@ $SUDO $APT install -y lsb-release
 $SUDO $APT install -y bc
 
 if (($(echo "$(lsb_release -rs) >= 19.04" | bc -l))); then
-    $SUDO $APT install -y ripgrep
-    $SUDO $APT install -y fd-find
+    # $SUDO $APT install -y ripgrep
+    # $SUDO $APT install -y fd-find
 fi
 
 ### ubuntu desktop ###
@@ -121,7 +121,7 @@ EOF
     # vscode
     # $SUDO snap install code --classic
     wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode_amd64.deb
-    $SUDO $APT install vscode_amd64.deb
+    $SUDO $APT install ./vscode_amd64.deb
 
     echo "Install packages using snap? [y/N]"
     if [ "$(ask ${yn})" = "y" ]; then
