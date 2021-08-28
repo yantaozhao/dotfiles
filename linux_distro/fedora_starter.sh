@@ -49,7 +49,6 @@ $SUDO dnf -y install wget vim tree git
 
 
 if [ "${mode}" -eq "0" ]; then
-
     # rime input
     $SUDO dnf -y install ibus-rime
     mkdir -p ${HOME}/.config/ibus/rime/ || true
@@ -63,7 +62,7 @@ patch:
 EOF
 
     # snap
-    $SUDO dnf install snapd
+    $SUDO dnf -y install snapd
     $SUDO ln -s /var/lib/snapd/snap /snap
 
     ## other packages
@@ -71,16 +70,11 @@ EOF
     $SUDO rpm --import https://packages.microsoft.com/keys/microsoft.asc
     $SUDO sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
 
-    # sublime-merge
-    # $SUDO rpm -v --import https://download.sublimetext.com/sublimehq-rpm-pub.gpg
-    # $SUDO dnf config-manager --add-repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
-
     # winehq
-    # $SUDO dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/${fedora_version}/winehq.repo
+    $SUDO dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/${fedora_version}/winehq.repo
 
     dnf check-update
     $SUDO dnf -y install code
-    # $SUDO dnf -y install sublime-merge
     # $SUDO dnf install winehq-{stable,devel}
 fi
 
