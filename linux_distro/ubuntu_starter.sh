@@ -62,14 +62,14 @@ echo "Change apt mirror to tuna-tsinghua? [y/N]"
 if [ "$(ask 'n')" = "y" ]; then
     $SUDO cp -aiv /etc/apt/sources.list /etc/apt/sources.list.orig
     cat <<EOF | $SUDO tee /etc/apt/sources.list
-    deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename} main restricted universe multiverse
-    # deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename} main restricted universe multiverse
-    deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-updates main restricted universe multiverse
-    # deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-updates main restricted universe multiverse
-    deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-backports main restricted universe multiverse
-    # deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-backports main restricted universe multiverse
-    deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-security main restricted universe multiverse
-    # deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-security main restricted universe multiverse
+deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename} main restricted universe multiverse
+# deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename} main restricted universe multiverse
+deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-updates main restricted universe multiverse
+# deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-updates main restricted universe multiverse
+deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-backports main restricted universe multiverse
+# deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-backports main restricted universe multiverse
+deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-security main restricted universe multiverse
+# deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${ubuntu_codename}-security main restricted universe multiverse
 EOF
 fi
 
@@ -108,7 +108,7 @@ if [ "${mode}" -eq "0" ]; then
     # rime input
     $SUDO $APT -y install ibus-rime librime-data-double-pinyin
     mkdir -p ${HOME}/.config/ibus/rime/ || true
-    cat << EOF | tee ${HOME}/.config/ibus/rime/default.custom.yaml
+    cat <<EOF | tee ${HOME}/.config/ibus/rime/default.custom.yaml
 patch:
   schema_list:
     # - schema: luna_pinyin          # 朙月拼音
@@ -140,6 +140,7 @@ EOF
         # sudo apt install --install-recommends winehq-{stable,devel}
     fi
 fi
+
 
 ### ubuntu docker ###
 if [ "${mode}" -eq "1" ]; then
@@ -173,44 +174,34 @@ if [ "${mode}" -eq "1" ]; then
     OMZ_INSTALLER_OPTION="--unattended"
 fi
 
-### common extra ###
-# echo "Tweak .bashrc?"
-# if [ "$(ask ${yn})" = "y" ]; then
-#     if [ -z "$(cat ~/.bashrc | grep -Fi 'history-search-')" ]; then
-#         cp -aiv ~/.bashrc ~/.bashrc.orig
-#         tee -a ~/.bashrc <<EOF
-#         # Up/Down key get matching history on inputing
-#         if [[ $- == *i* ]]; then
-#           bind '"\e[A": history-search-backward'
-#           bind '"\e[B": history-search-forward'
-#         fi
-
-#         # Tab completion case insensitive
-#         bind 'set completion-ignore-case on'
-
-#         # Colored manpage:
-#         # colors are from ohmyzsh https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colored-man-pages
-#         man() {
-#           LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-#           LESS_TERMCAP_md=$(printf "\e[1;31m") \
-#           LESS_TERMCAP_me=$(printf "\e[0m") \
-#           LESS_TERMCAP_se=$(printf "\e[0m") \
-#           LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-#           LESS_TERMCAP_ue=$(printf "\e[0m") \
-#           LESS_TERMCAP_us=$(printf "\e[1;32m") \
-#           command man "$@"
-#         }
-#         export -f man
-# EOF
-#     else
-#         echo ".bashrc already tweaked!"
-#     fi
-# fi
 
 echo "Install Miniconda? [y/N]"
 if [ "$(ask ${yn})" = "y" ]; then
     wget -nc https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh && sh Miniconda3-latest-Linux-x86_64.sh
+    cat <<EOF | tee ${HOME}/.condarc
+channels:
+  - defaults
+show_channel_urls: true
+default_channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2
+custom_channels:
+  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+EOF
 fi
+
+# pip
+mkdir -v ${HOME}/.pip/
+cat <<EOF | tee ${HOME}/.pip/pip.conf
+[global]
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+EOF
 
 echo "Install llvm apt source? [y/N]"
 if [ "$(ask ${yn})" = "y" ]; then
