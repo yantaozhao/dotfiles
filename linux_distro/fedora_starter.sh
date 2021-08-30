@@ -32,13 +32,13 @@ case "${i}" in
 esac
 
 
-# if [ -z "$(grep 'fastestmirror' /etc/dnf/dnf.conf)" ]; then
-#     pushd .
-#     cd /etc/dnf/
-#     cp -iv dnf.conf dnf.conf.orig
-#     echo "fastestmirror=True" >>dnf.conf
-#     popd
-# fi
+if [ -z "$(grep 'fastestmirror' /etc/dnf/dnf.conf)" ]; then
+    pushd .
+    cd /etc/dnf/
+    cp -iv dnf.conf dnf.conf.orig
+    cat "fastestmirror=True" | $SUDO tee -a dnf.conf
+    popd
+fi
 
 $SUDO dnf -y check-update || true
 # $SUDO dnf -y distro-sync
@@ -46,6 +46,8 @@ $SUDO dnf -y group install "Minimal Install"
 $SUDO dnf -y group install "C Development Tools and Libraries"
 $SUDO dnf -y install wget vim tree git
 # $SUDO dnf -y install ripgrep fd-find
+
+git config --global core.editor "vim"
 
 
 if [ "${mode}" -eq "0" ]; then

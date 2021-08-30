@@ -98,8 +98,9 @@ $SUDO $APT install -y lsb-release
 $SUDO $APT install -y bc
 
 if (($(echo "$(lsb_release -rs) >= 19.04" | bc -l))); then
-    # $SUDO $APT install -y ripgrep fd-find
+    $SUDO $APT install -y ripgrep fd-find
 fi
+git config --global core.editor "vim"
 
 ### ubuntu desktop ###
 if [ "${mode}" -eq "0" ]; then
@@ -119,8 +120,10 @@ EOF
 
     # vscode
     # $SUDO snap install code --classic
-    wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode_amd64.deb
-    $SUDO $APT install ./vscode_amd64.deb
+    if [ ! -e "vscode_amd64.deb" ]; then
+        wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode_amd64.deb
+        $SUDO $APT install ./vscode_amd64.deb
+    fi
 
     echo "Install packages using snap? [y/N]"
     if [ "$(ask ${yn})" = "y" ]; then
@@ -150,14 +153,16 @@ if [ "${mode}" -eq "1" ]; then
     # $SUDO update-locale LANG=en_US.UTF-8
 
     # node
-    wget https://deb.nodesource.com/setup_lts.x -O node_setup_lts.x
-    if [ "${me}" != "root" ]; then
-        $SUDO -E bash node_setup_lts.x
-    else
-        bash node_setup_lts.x
+    if [ ! -e "node_setup_lts.x" ]; then
+        wget https://deb.nodesource.com/setup_lts.x -O node_setup_lts.x
+        if [ "${me}" != "root" ]; then
+            $SUDO -E bash node_setup_lts.x
+        else
+            bash node_setup_lts.x
+        fi
+        $SUDO $APT -y update
+        $SUDO $APT install -y nodejs
     fi
-    $SUDO $APT -y update
-    $SUDO $APT install -y nodejs
 
     # ssh server
     echo "Please set passwd before using ssh login:"
@@ -177,7 +182,9 @@ fi
 
 echo "Install Miniconda? [y/N]"
 if [ "$(ask ${yn})" = "y" ]; then
-    wget -nc https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh && sh Miniconda3-latest-Linux-x86_64.sh
+    if [ ! -e "Miniconda3-latest-Linux-x86_64.sh" ]; then
+        wget -nc https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh && sh Miniconda3-latest-Linux-x86_64.sh
+    fi
     cat <<EOF | tee ${HOME}/.condarc
 channels:
   - defaults
@@ -197,7 +204,7 @@ EOF
 fi
 
 # pip
-mkdir -v ${HOME}/.pip/
+mkdir -v ${HOME}/.pip/ || true
 cat <<EOF | tee ${HOME}/.pip/pip.conf
 [global]
 index-url = https://pypi.tuna.tsinghua.edu.cn/simple
