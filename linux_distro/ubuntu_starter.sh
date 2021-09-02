@@ -104,7 +104,7 @@ git config --global core.editor "vim"
 
 ### ubuntu desktop ###
 if [ "${mode}" -eq "0" ]; then
-    $SUDO $APT install -y unar
+    $SUDO $APT install -y p7zip-full
     
     # rime input
     $SUDO $APT -y install ibus-rime librime-data-double-pinyin
