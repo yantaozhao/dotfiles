@@ -90,21 +90,22 @@ fi
 ### common ###
 $SUDO $APT install -y wget
 $SUDO $APT install -y build-essential binutils gdb
-$SUDO $APT install -y autoconf automake libtool
+# $SUDO $APT install -y autoconf automake libtool
 $SUDO $APT install -y vim tree git
 $SUDO $APT install -y openssh-client
 $SUDO $APT install -y software-properties-common
 $SUDO $APT install -y lsb-release
 $SUDO $APT install -y bc
-
+$SUDO $APT install -y p7zip-full
 if (($(echo "$(lsb_release -rs) >= 19.04" | bc -l))); then
     $SUDO $APT install -y ripgrep fd-find
 fi
+
 git config --global core.editor "vim"
 
 ### ubuntu desktop ###
 if [ "${mode}" -eq "0" ]; then
-    $SUDO $APT install -y p7zip-full
+    $SUDO $APT install -y nemo
     
     # rime input
     $SUDO $APT -y install ibus-rime librime-data-double-pinyin
@@ -118,10 +119,10 @@ patch:
   menu/page_size: 9
 EOF
 
-    # vscode
-    # $SUDO snap install code --classic
+    # vscode. snap/snapcraft version has cjk input issue
     if [ ! -e "vscode_amd64.deb" ]; then
-        wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode_amd64.deb
+        # wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode_amd64.deb
+        wget https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64 -O vscode_amd64.deb
         $SUDO $APT install ./vscode_amd64.deb
     fi
 
