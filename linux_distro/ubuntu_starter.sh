@@ -121,8 +121,8 @@ EOF
 
     # vscode. snap/snapcraft version has cjk input issue
     if [ ! -e "vscode_amd64.deb" ]; then
-        # wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode_amd64.deb
-        wget https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64 -O vscode_amd64.deb
+        # wget 'https://go.microsoft.com/fwlink/?LinkID=760868' -O vscode_amd64.deb
+        wget 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' -O vscode_amd64.deb
         $SUDO $APT install ./vscode_amd64.deb
     fi
 
