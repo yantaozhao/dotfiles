@@ -96,7 +96,7 @@ $SUDO $APT install -y openssh-client
 $SUDO $APT install -y software-properties-common
 $SUDO $APT install -y lsb-release
 $SUDO $APT install -y bc
-$SUDO $APT install -y p7zip-full
+$SUDO $APT install -y unar p7zip-full
 if (($(echo "$(lsb_release -rs) >= 19.04" | bc -l))); then
     $SUDO $APT install -y ripgrep fd-find
 fi
