@@ -91,7 +91,7 @@ fi
 $SUDO $APT install -y wget
 $SUDO $APT install -y build-essential binutils gdb
 # $SUDO $APT install -y autoconf automake libtool
-$SUDO $APT install -y vim tree git
+$SUDO $APT install -y vim tree
 $SUDO $APT install -y openssh-client
 $SUDO $APT install -y software-properties-common
 $SUDO $APT install -y lsb-release
@@ -101,6 +101,10 @@ if (($(echo "$(lsb_release -rs) >= 19.04" | bc -l))); then
     $SUDO $APT install -y ripgrep fd-find
 fi
 
+$SUDO apt-add-repository ppa:fish-shell/release-3
+$SUDO add-apt-repository ppa:git-core/ppa
+$SUDO $APT update
+$SUDO $APT install -y git
 git config --global core.editor "vim"
 
 ### ubuntu desktop ###
