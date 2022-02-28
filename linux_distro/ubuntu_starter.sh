@@ -91,17 +91,17 @@ fi
 $SUDO $APT install -y wget
 $SUDO $APT install -y build-essential binutils gdb
 # $SUDO $APT install -y autoconf automake libtool
-$SUDO $APT install -y vim tree
+$SUDO $APT install -y vim tree zip unzip
 $SUDO $APT install -y openssh-client
 $SUDO $APT install -y software-properties-common
 $SUDO $APT install -y lsb-release
 $SUDO $APT install -y bc
-$SUDO $APT install -y unar p7zip-full
 if (($(echo "$(lsb_release -rs) >= 19.04" | bc -l))); then
     $SUDO $APT install -y ripgrep fd-find
 fi
 
-$SUDO apt-add-repository ppa:fish-shell/release-3
+# $SUDO add-apt-repository ppa:graphics-drivers/ppa
+# $SUDO add-apt-repository ppa:deadsnakes/ppa
 $SUDO add-apt-repository ppa:git-core/ppa
 $SUDO $APT update
 $SUDO $APT install -y git
@@ -109,8 +109,6 @@ git config --global core.editor "vim"
 
 ### ubuntu desktop ###
 if [ "${mode}" -eq "0" ]; then
-    $SUDO $APT install -y nemo
-    
     # rime input
     $SUDO $APT -y install ibus-rime librime-data-double-pinyin
     mkdir -p ${HOME}/.config/ibus/rime/ || true
@@ -123,21 +121,19 @@ patch:
   menu/page_size: 9
 EOF
 
-    # vscode. snap/snapcraft version has cjk input issue
-    if [ ! -e "vscode_amd64.deb" ]; then
-        # wget 'https://go.microsoft.com/fwlink/?LinkID=760868' -O vscode_amd64.deb
-        wget 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' -O vscode_amd64.deb
-        $SUDO $APT install ./vscode_amd64.deb
-    fi
+    ## vscode. snap/snapcraft version has cjk input issue, so use deb version
+    # if [ ! -e "vscode_amd64.deb" ]; then
+        # wget 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' -O vscode_amd64.deb
+        # $SUDO $APT install ./vscode_amd64.deb
+    # fi
 
     echo "Install packages using snap? [y/N]"
     if [ "$(ask ${yn})" = "y" ]; then
         $SUDO snap install sublime-text --classic
         $SUDO snap install sublime-merge --classic
-        $SUDO snap install node --classic
-        npm config set registry https://registry.npm.taobao.org
-        npm config set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/
-        # $SUDO snap install chromium
+        # $SUDO snap install node --classic
+        # npm config set registry https://registry.npm.taobao.org
+        # npm config set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/
     fi
 
     echo "Install wine apt source? [y/N]"
@@ -204,6 +200,7 @@ custom_channels:
   bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
   menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
   pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  pytorch-lts: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
   simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
 EOF
 fi
