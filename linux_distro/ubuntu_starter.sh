@@ -91,10 +91,10 @@ fi
 $SUDO $APT install -y wget
 $SUDO $APT install -y build-essential binutils gdb
 # $SUDO $APT install -y autoconf automake libtool
-$SUDO $APT install -y vim tree zip unzip
-$SUDO $APT install -y openssh-client
+$SUDO $APT install -y vim tree zip unzip zstd
 $SUDO $APT install -y software-properties-common
 $SUDO $APT install -y lsb-release
+$SUDO $APT install -y openssh-client
 $SUDO $APT install -y bc
 if (($(echo "$(lsb_release -rs) >= 19.04" | bc -l))); then
     $SUDO $APT install -y ripgrep fd-find
@@ -121,7 +121,7 @@ patch:
   menu/page_size: 9
 EOF
 
-    ## vscode. snap/snapcraft version has cjk input issue, so use deb version
+    ## vscode, use deb version, because snap/snapcraft version has cjk input issue
     # if [ ! -e "vscode_amd64.deb" ]; then
         # wget 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' -O vscode_amd64.deb
         # $SUDO $APT install ./vscode_amd64.deb
@@ -172,7 +172,7 @@ if [ "${mode}" -eq "1" ]; then
     fi
     $SUDO $APT install -y openssh-server
     $SUDO sed -i 's/#*PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
-    $SUDO sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd
+    # $SUDO sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd
 
     echo "ip: $(hostname -I)"
     service ssh status || true
@@ -214,9 +214,10 @@ EOF
 
 echo "Install llvm apt source? [y/N]"
 if [ "$(ask ${yn})" = "y" ]; then
+    # only amd64 available on tsinghua tuna mirror
     cat <<EOF | $SUDO tee /etc/apt/sources.list.d/llvm_latest.list
-        deb http://apt.llvm.org/${ubuntu_codename}/ llvm-toolchain-${ubuntu_codename} main
-        deb-src http://apt.llvm.org/${ubuntu_codename}/ llvm-toolchain-${ubuntu_codename} main
+        deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/llvm-apt/${ubuntu_codename}/ llvm-toolchain-${ubuntu_codename} main
+        # deb-src [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/llvm-apt/${ubuntu_codename}/ llvm-toolchain-${ubuntu_codename} main
 EOF
     wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | $SUDO apt-key add -
 fi
