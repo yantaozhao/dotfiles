@@ -38,7 +38,8 @@ $SUDO $APT install -y ripgrep
 
 # git:
 $SUDO $APT install -y git
-git config --global core.editor "vim"
+git config --global core.editor vim
+git config --global diff.tool vimdiff
 # $SUDO snap install sublime-merge --edge --classic
 
 # conda:
