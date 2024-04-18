@@ -25,7 +25,6 @@ $SUDO $APT install -y build-essential binutils gdb
 $SUDO $APT install -y vim tree zip unzip
 $SUDO $APT install -y software-properties-common
 $SUDO $APT install -y openssh-client
-# $SUDO $APT install -y ugrep
 $SUDO $APT install -y ripgrep
 
 # $SUDO add-apt-repository ppa:deadsnakes/ppa
@@ -42,18 +41,18 @@ git config --global core.editor vim
 git config --global diff.tool vimdiff
 # $SUDO snap install sublime-merge --edge --classic
 
-# conda:
-if ! command -v conda > /dev/null; then
-    if [ ! -e "Miniconda3-latest-Linux-x86_64.sh" ]; then
-        wget -nc https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    fi
-    sh Miniconda3-latest-Linux-x86_64.sh
-fi
+# # conda:
+# if ! command -v conda > /dev/null; then
+#     if [ ! -e "Miniconda3-latest-Linux-x86_64.sh" ]; then
+#         wget -nc https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
+#     fi
+#     sh Miniconda3-latest-Linux-x86_64.sh
+# fi
 
 # zsh:
 $SUDO $APT install -y zsh
 if [ ! -d $HOME/.oh-my-zsh ]; then
-    REMOTE=https://gitee.com/mirrors/oh-my-zsh.git sh -c "$(wget -qO- https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh)"
+    REMOTE=https://gitee.com/mirrors/ohmyzsh.git sh -c "$(wget -qO- https://gitee.com/mirrors/ohmyzsh/raw/master/tools/install.sh)"
 fi
 
 echo 'DONE'
