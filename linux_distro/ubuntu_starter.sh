@@ -23,9 +23,11 @@ $SUDO $APT install -y wget
 $SUDO $APT install -y build-essential binutils gdb
 # $SUDO $APT install -y autoconf automake libtool
 $SUDO $APT install -y vim tree zip unzip
+$SUDO $APT install -y htop
 $SUDO $APT install -y software-properties-common
 $SUDO $APT install -y openssh-client
 $SUDO $APT install -y ripgrep
+$SUDO $APT install -y unar
 
 # $SUDO add-apt-repository ppa:deadsnakes/ppa
 
